@@ -1,0 +1,39 @@
+body{
+    width: 100%;
+}
+.home{
+    width: 100%;
+}
+.vdoBG{
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("../../assets/background.png");
+}
+.usercards{
+    display: flex;
+    width: 90%;
+    overflow-x: auto;
+    border-radius: 5rem;
+
+    scrollbar-width: none; /* firefox*/
+    -ms-overflow-style: none; /*IE edge*/
+}
+.usercards::-webkit-scrollbar{
+    display: none;
+}
+.plainBG{
+    background-color: rgba(246, 254, 255, 0.952);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3.5rem 0rem;
+}
+.courseleft, .courseright{
+    width: 95%;
+}

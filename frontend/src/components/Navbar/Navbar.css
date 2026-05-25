@@ -1,0 +1,56 @@
+.navbar-wrapper{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem;
+}
+.course-Mode .navlink{
+    color: black;
+}
+.course-Mode #signup{
+    color: white;
+}
+.course-Mode #login{
+    border: black  1px solid;
+}
+.navbar{
+    width: 70vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.name{
+    display: flex;
+    font-size: 0.9rem;
+    align-items: center;
+    img{
+        width: 3rem;
+    }
+    h1{
+        font-size: 1.5rem;
+    }
+}
+.redirectlinks{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 25vw;
+}
+.navlink{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+}
+#signup{
+    background-color: rgb(25, 118, 210);
+    padding: 0.35rem;
+    border-radius: 0.7rem;
+    color: black;
+    font-weight: 700;
+}
+#login{
+    border: white 1px solid;
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.7rem;
+
+}

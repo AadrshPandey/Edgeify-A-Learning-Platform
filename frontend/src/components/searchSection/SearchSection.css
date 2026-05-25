@@ -1,0 +1,32 @@
+.searchBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    input{
+        width: 55rem;
+        height: 2.8rem;
+        padding: 1rem;
+        font-size: 1.2rem;
+        border-radius: 0.7rem;
+        align-items: center;
+        background-color: white;
+        padding-left: 3rem;
+        padding-right: 3.1rem;
+        border-radius: 2rem;
+        border: none;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
+    img{
+        width: 2.2rem;
+        position: absolute;
+    }
+}
+.searchicons{
+    transform: translateX(-26rem);
+}
+.nexticons{
+    transform: translateX(26rem);
+}
