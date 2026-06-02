@@ -1,0 +1,115 @@
+/* Import a clean modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #4f46e5;       /* Modern Indigo */
+  --primary-hover: #4338ca;
+  --bg-color: #f9fafb;            /* Soft off-white light background */
+  --card-bg: #ffffff;
+  --text-main: #111827;           /* Dark gray (better than pure black) */
+  --text-muted: #6b7280;          /* Muted gray for subtitles/labels */
+  --border-color: #d1d5db;
+  --border-focus: #a5b4fc;
+}
+
+/* Center the form beautifully on the page */
+.form-container {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* The core form card */
+.register-form {
+  background-color: var(--card-bg);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Typography styling */
+.register-form h2 {
+  margin: 0 0 8px 0;
+  color: var(--text-main);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.form-subtitle {
+  margin: 0 0 28px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Layout container for each field */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+/* Styled inputs and dropdowns */
+.form-group input,
+.form-group select {
+  font-family: inherit;
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  outline: none;
+  background-color: #fff;
+  color: var(--text-main);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Subtle placeholder color */
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* Highlighting field on focus */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+/* Modern submit button */
+.submit-btn {
+  font-family: inherit;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.submit-btn:active {
+  transform: scale(0.98); /* Tiny click effect */
+}
