@@ -1,115 +1,173 @@
-/* Import a clean modern font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-  --primary-color: #4f46e5;       /* Modern Indigo */
-  --primary-hover: #4338ca;
-  --bg-color: #f9fafb;            /* Soft off-white light background */
-  --card-bg: #ffffff;
-  --text-main: #111827;           /* Dark gray (better than pure black) */
-  --text-muted: #6b7280;          /* Muted gray for subtitles/labels */
-  --border-color: #d1d5db;
-  --border-focus: #a5b4fc;
-}
-
-/* Center the form beautifully on the page */
+/* Container Layout */
 .form-container {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
-  box-sizing: border-box;
 }
 
-/* The core form card */
 .register-form {
-  background-color: var(--card-bg);
+  background: #ffffff;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 450px;
+  max-width: 800px; /* Increased max-width to allow comfortable horizontal layout */
+  box-sizing: border-box;
+
+  /* Magic turns on here: Creates a 2-column structural grid */
+  display: grid;
+  grid-template-columns: 250px 1fr; 
+  column-gap: 40px;
+  row-gap: 20px;
 }
 
-/* Typography styling */
+/* Make header spans take full width across both columns */
+.register-form h2,
+.form-subtitle,
+.submit-btn {
+  grid-column: span 2;
+}
+
 .register-form h2 {
-  margin: 0 0 8px 0;
-  color: var(--text-main);
-  font-size: 24px;
-  font-weight: 700;
+  margin: 0;
+  color: #1a1a1a;
   text-align: center;
+  font-size: 28px;
 }
 
 .form-subtitle {
-  margin: 0 0 28px 0;
-  color: var(--text-muted);
-  font-size: 14px;
   text-align: center;
+  color: #666;
+  margin-bottom: 10px;
+  font-size: 14px;
 }
 
-/* Layout container for each field */
-.form-group {
+/* Left Side: Profile Picture Upload Section Layout */
+.avatar-upload-section {
+  grid-column: 1; /* Locks avatar into column 1 */
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb; /* Subtle dividing line */
+  padding-right: 20px;
+  height: 100%;
+  gap: 16px;
+}
+
+.avatar-preview {
+  width: 150px; /* Made slightly bigger since it has more room now */
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #4f46e5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+  background-color: #f0f0f0;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-file-input {
+  display: none;
+}
+
+.avatar-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.avatar-label:hover {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+/* Right Side: Form Groups inputs and selects container wrap */
+.form-group {
+  grid-column: 2; /* Locks inputs into column 2 */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
 }
 
 .form-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-main);
   margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
 }
 
-/* Styled inputs and dropdowns */
 .form-group input,
 .form-group select {
-  font-family: inherit;
   padding: 10px 14px;
   font-size: 15px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   outline: none;
   background-color: #fff;
-  color: var(--text-main);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: #1f2937;
 }
 
-/* Subtle placeholder color */
-.form-group input::placeholder {
-  color: #9ca3af;
-}
-
-/* Highlighting field on focus */
 .form-group input:focus,
 .form-group select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* Modern submit button */
+/* Action Button spans both columns at bottom */
 .submit-btn {
-  font-family: inherit;
   width: 100%;
-  background-color: var(--primary-color);
+  padding: 14px;
+  background-color: #4f46e5;
   color: white;
-  padding: 12px;
+  border: none;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  border: none;
-  border-radius: 6px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
 }
 
 .submit-btn:hover {
-  background-color: var(--primary-hover);
+  background-color: #4338ca;
 }
 
-.submit-btn:active {
-  transform: scale(0.98); /* Tiny click effect */
+/* Mobile Responsiveness: Switches back to vertical list stack if user screen is narrow */
+@media (max-width: 650px) {
+  .register-form {
+    grid-template-columns: 1fr; /* Drop down to single full-width column */
+    padding: 24px;
+  }
+
+  .register-form h2,
+  .form-subtitle,
+  .avatar-upload-section,
+  .form-group,
+  .submit-btn {
+    grid-column: span 1; /* Reset elements to only claim their single block */
+  }
+
+  .avatar-upload-section {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb; /* Put dividing line underneath image instead */
+    padding-right: 0;
+    padding-bottom: 25px;
+  }
 }

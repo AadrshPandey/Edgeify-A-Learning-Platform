@@ -7,9 +7,9 @@ import ApiResponse from "../utils/ApiResponse.js";
 const registerUser = asyncHandler(async (req, res) => {
     const {username, fullName, email, password, role, bio} = req.body
 
-    console.log(username, " " ,fullName, " " ,email, " " ,password, " " ,role, " " ,bio);
+    console.log(username, " " ,fullName, " " ,email, " " ,role, " " ,bio, " ");
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     });
 
@@ -17,12 +17,18 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User Already Exists");
     };
 
-    const profile_PicLocalPath = req.files?.profile_Pic[0]?.path;
+    console.log(req.files);
+
+    let profile_PicLocalPath;
+
+    if(req.files && Array.isArray(req.files.profile_Pic) && req.files.profile_Pic.length > 0){
+        profile_PicLocalPath = req.files.profile_Pic[0].path;
+    }
 
     const profile_Pic = await uploadOnCloudinary(profile_PicLocalPath);
 
     const user = await User.create({
-        username: username.toLowerCase,
+        username: username.toLowerCase(),
         fullName,
         email,
         role,
@@ -31,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
         password
     });
 
-    const createdUser = User.findById(user._id).select(
+    const createdUser = await User.findById(user._id).select(
         "-password -refresh_token"
     );
 
