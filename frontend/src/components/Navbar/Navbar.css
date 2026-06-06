@@ -41,7 +41,7 @@
     color: white;
     font-weight: 600;
 }
-#signup{
+#signup, #profile{
     background-color: rgb(25, 118, 210);
     padding: 0.35rem;
     border-radius: 0.7rem;
@@ -53,4 +53,19 @@
     padding: 0.35rem 0.6rem;
     border-radius: 0.7rem;
 
+}
+
+.logout-btn{
+    border: white 1px solid;
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.7rem;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.course-Mode .logout-btn{
+    border: black 1px solid;
+    color: black;
 }

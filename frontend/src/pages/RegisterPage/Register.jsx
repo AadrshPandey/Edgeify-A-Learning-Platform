@@ -2,8 +2,11 @@ import React from "react";
 import { useState } from "react";
 import "./Register.css";
 import defaultPhoto from "../../assets/defaultPhoto.png";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     fullName: "",
@@ -50,7 +53,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:${import.meta.env.VITE_PORT}/api/v1/user/register`,
+        `/api/v1/user/register`,
 
         {
           method: "POST",
@@ -60,6 +63,12 @@ const Register = () => {
       );
 
       const data = await response.json();
+
+      if (response.ok) {
+        navigate("/login");
+      } else {
+        alert(data.data);
+      }
       console.log(data);
     } catch (error) {
       console.log("error while fetching from frontend !!", error);
@@ -69,8 +78,14 @@ const Register = () => {
   return (
     <div className="form-container">
       <form className="register-form" onSubmit={handleSubmit}>
+        <button
+          type="button"
+          className="back-home"
+          onClick={() => navigate("/")}
+        >
+          Home
+        </button>
         <h2>Create an Account</h2>
-        <p className="form-subtitle">Join our community today</p>
         <div className="form-split-body">
           <div className="avatar-upload-section">
             <div className="avatar-preview">
@@ -98,7 +113,7 @@ const Register = () => {
               type="text"
               id="username"
               name="username"
-              placeholder="e.g., johndoe"
+              placeholder="e.g., aadrsh456"
               value={formData.username}
               onChange={handleChange}
               required
@@ -111,7 +126,7 @@ const Register = () => {
               type="text"
               id="fullName"
               name="fullName"
-              placeholder="e.g., John Doe"
+              placeholder="e.g., Aadrsh Pandey"
               value={formData.fullName}
               onChange={handleChange}
               required
@@ -161,6 +176,10 @@ const Register = () => {
         <button type="submit" className="submit-btn">
           Sign Up
         </button>
+
+        <p className="login-link">
+          Already Registered ? <a href="/login">Login</a>
+        </p>
       </form>
     </div>
   );
