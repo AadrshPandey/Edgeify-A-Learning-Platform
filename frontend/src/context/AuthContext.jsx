@@ -1,19 +1,44 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
-const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <AuthContext.Provider value = {{user, setUser}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch(`/api/v1/user/current-user`, {
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          setUser(data.data);
+        } else {
+          console.log("Data Not Fetched");
+        }
+      } catch (error) {
+        console.log(error);
+      } finally{
+        setLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 const useAuth = () => {
-    return useContext(AuthContext);
-}
+  return useContext(AuthContext);
+};
 
-export {AuthProvider, useAuth};
+export { AuthProvider, useAuth };

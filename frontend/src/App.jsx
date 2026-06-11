@@ -19,7 +19,6 @@ function App() {
         const response = await fetch(
           `/api/v1/user/current-user`,
           {
-            method : "POST",
             credentials: 'include'
           }
         )

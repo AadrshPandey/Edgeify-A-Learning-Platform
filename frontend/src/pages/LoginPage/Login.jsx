@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "../../context/AuthContext";
+import { ClipLoader } from "react-spinners";
 
 const Login = () => {
   const navigate = useNavigate();
  
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -26,6 +29,7 @@ const Login = () => {
     console.log("Login Data:", formData);
 
     try {
+      setLoading(true);
       const response = await fetch(`/api/v1/user/login`, {
         method: "POST",
         headers: {
@@ -47,6 +51,8 @@ const Login = () => {
       console.log(data);
     } catch (error) {
       console.log("Login Error:", error);
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -94,7 +100,7 @@ const Login = () => {
         </div>
 
         <button type="submit" className="login-btn">
-          Login
+         {loading ? <ClipLoader size={20}/> : "Login"}
         </button>
 
         <p className="register-link">

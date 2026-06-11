@@ -3,9 +3,12 @@ import { useState } from "react";
 import "./Register.css";
 import defaultPhoto from "../../assets/defaultPhoto.png";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const Register = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -52,6 +55,8 @@ const Register = () => {
     }
 
     try {
+
+      setLoading(true);
       const response = await fetch(
         `/api/v1/user/register`,
 
@@ -72,6 +77,8 @@ const Register = () => {
       console.log(data);
     } catch (error) {
       console.log("error while fetching from frontend !!", error);
+    } finally { 
+      setLoading(false);
     }
   };
 
@@ -173,8 +180,8 @@ const Register = () => {
           </div>
         </div>
 
-        <button type="submit" className="submit-btn">
-          Sign Up
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? <ClipLoader size={20}/> : "Register"}
         </button>
 
         <p className="login-link">

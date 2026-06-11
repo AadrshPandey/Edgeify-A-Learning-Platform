@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, NavLink, useLocation } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import logo from "../../assets/edgeifylogo.png";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
-  const { user, setUser } = useAuth();
-  const navigate = useNavigate();
+  const { user, setUser, loading } = useAuth();
 
-  const location = useLocation();
-  const isCoursePage = location.pathname === "/Courses";
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -33,8 +31,12 @@ const Navbar = () => {
     }
   }
 
+  if(loading){
+    return <h2>Loading...</h2>
+  }
+
   return (
-    <div className= {`navbar-wrapper ${isCoursePage ? "course-Mode":""}`}>
+    <div className= "navbar-wrapper">
       <div className="navbar">
         <div className="name">
           <img src={logo} alt="no image"/>
