@@ -17,6 +17,10 @@ const categorySchema = new Schema(
         thumbnail:{
             type: String,
             trim: true
+        },
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
         }
     },
     {
