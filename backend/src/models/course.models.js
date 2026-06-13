@@ -30,7 +30,7 @@ const courseSchema = new Schema(
             trim: true
         },
         duration:{
-            type: Number
+            type: String
         },
         teacher_id:{
             type: Schema.Types.ObjectId,

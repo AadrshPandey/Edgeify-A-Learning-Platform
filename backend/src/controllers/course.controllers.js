@@ -11,6 +11,15 @@ const createCourse = asyncHandler(async (req, res) => {
   const thumbnailLocalPath = req.file?.path;
   const teacher_id = req.user?._id;
 
+  console.log({
+    title,
+    description,
+    price,
+    level,
+    language,
+    duration
+});
+
   if (!title || !description || price === undefined || !level || !language || duration === undefined) {
     throw new ApiError(400, "All feilds are required");
   }

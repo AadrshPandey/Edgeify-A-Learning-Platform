@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
-const createCategroy = asyncHandler(async (req, res) => {
+const createCategory = asyncHandler(async (req, res) => {
   const { category_name, description } = req.body;
   const thumbnailLocalPath = req.file?.path;
   const user_id = req.user?._id;
@@ -106,6 +106,10 @@ const updateCategoryDetails = asyncHandler(async (req, res) => {
   const user_id = req.user?._id;
   const { category_id } = req.params;
 
+  if (!category_name || !description) {
+    throw new ApiError(400, "All feilds are required");
+  }
+
   const category = await Category.findById(category_id);
 
   if (!category) {
@@ -196,7 +200,7 @@ const updateCategoryThumbnail = asyncHandler(async (req, res) => {
 });
 
 export {
-  createCategroy,
+  createCategory,
   getAllCategories,
   getCategoryById,
   deleteCategory,
