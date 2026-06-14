@@ -20,6 +20,10 @@ const createCourse = asyncHandler(async (req, res) => {
     duration
 });
 
+  if(req.user?.role === "student"){
+    throw new ApiError(403, "Unauthorized Access");
+  }
+
   if (!title || !description || price === undefined || !level || !language || duration === undefined) {
     throw new ApiError(400, "All feilds are required");
   }

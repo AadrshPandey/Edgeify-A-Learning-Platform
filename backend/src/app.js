@@ -6,6 +6,7 @@ import courseRouter from "./routes/course.routes.js";
 import ApiResponse from "./utils/ApiResponse.js";
 import ApiError from "./utils/ApiError.js";
 import categoryRouter from "./routes/category.routes.js";
+import videoRouter from "./routes/video.routes.js";
 
 const app = express();
 
@@ -38,6 +39,8 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/course", courseRouter);
 //CATEGORY ROUTER
 app.use("/api/v1/category", categoryRouter);
+//VIDEO ROUTER
+app.use("/api/v1/video", videoRouter);
 
 app.use((err, req, res, next) => {
     return res.status(err.statusCode || 500).json(new ApiResponse(err.statusCode, err.message, err.success));

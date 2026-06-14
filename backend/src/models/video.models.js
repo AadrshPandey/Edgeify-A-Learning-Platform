@@ -12,18 +12,22 @@ const videoSchema = new Schema(
             type: String,
             trim: true
         },
-        url:{
+        video_url:{
             type: String
         },
         thumbnail:{
             type: String
         },
         duration:{
-            type: Number
+            type: String
         },
         course_id:{
             type: Schema.Types.ObjectId,
             ref: "Course"
+        },
+        teacher_id : {
+            type: Schema.Types.ObjectId,
+            ref : "User"
         }
     },
     {
