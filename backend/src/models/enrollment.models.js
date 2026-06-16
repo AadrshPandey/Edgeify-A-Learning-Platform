@@ -10,11 +10,9 @@ const enrollmentSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Course"
         },
-        enrolled_at:{
-            type: Number
-        },
         progress_percentage:{
-            type: Number
+            type: Number,
+            default : 0
         }
     },
     {
