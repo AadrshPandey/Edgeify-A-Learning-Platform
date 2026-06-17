@@ -34,7 +34,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
     !thumbnailLocalPath||
     !video_urlLocalPath
   ) {
-    throw new ApiError(404, "All fields are necessary");
+    throw new ApiError(400, "All fields are necessary");
   }
 
   const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);

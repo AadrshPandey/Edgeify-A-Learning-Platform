@@ -4,16 +4,19 @@ const reviewSchema = new Schema(
     {
         user_id:{
             type: Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required:true
         },
         course_id:{
             type: Schema.Types.ObjectId,
-            ref: "Course"
+            ref: "Course",
+            required: true
         },
         rating:{
-            type: Number
+            type: Number,
+            required: true
         },
-        comment:{
+        review:{
             type: String,
             trim: true
         }

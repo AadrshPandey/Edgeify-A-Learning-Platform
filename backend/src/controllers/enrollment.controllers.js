@@ -72,21 +72,29 @@ const getStudentsOfCourse = asyncHandler(async (req, res) => {
   const { course_id } = req.params;
   const user_id = req.user?._id;
 
+  if (req.user?.role === "students") {
+    throw new ApiError(403, "Unauthorized Access");
+  }
+
   const course = await Course.findById(course_id);
 
   if (!course) {
     throw new ApiError(404, "Course does not exist");
   }
 
+  if (course.teacher_id.toString() != req.user._id.toString()) {
+    throw new ApiError(403, "Unauthorized Access");
+  }
+
   const enrollments = await Enrollment.find({
     course_id,
   }).populate("user_id");
 
-  const students = enrollments.map(
-    enrollments => enrollments.user_id
-  );
+  const students = enrollments.map((enrollments) => enrollments.user_id);
 
   return res
-  .status(200)
-  .json(new ApiResponse(200, students, "Students fetched Successfully"));
+    .status(200)
+    .json(new ApiResponse(200, students, "Students fetched Successfully"));
 });
+
+export { createEnrollment, getMyEnrollments, isEnrolled, getStudentsOfCourse };

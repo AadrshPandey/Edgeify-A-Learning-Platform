@@ -7,6 +7,10 @@ import ApiResponse from "./utils/ApiResponse.js";
 import ApiError from "./utils/ApiError.js";
 import categoryRouter from "./routes/category.routes.js";
 import videoRouter from "./routes/video.routes.js";
+import progressRouter from "./routes/progress.routes.js";
+import enrollmentRouter from "./routes/enrollment.routes.js";
+import reviewRouter from "./routes/review.routes.js";
+import historyRouter from "./routes/history.routes.js";
 
 const app = express();
 
@@ -41,6 +45,14 @@ app.use("/api/v1/course", courseRouter);
 app.use("/api/v1/category", categoryRouter);
 //VIDEO ROUTER
 app.use("/api/v1/video", videoRouter);
+//PROGREESS ROUTER
+app.use("/api/v1/progress", progressRouter);
+//ENROLLMENT ROUTER
+app.use("/api/v1/enrollment", enrollmentRouter);
+//REVIEW ROUTER
+app.use("/api/v1/review", reviewRouter);
+//HISTORY ROUTER
+app.use("/api/v1/history", historyRouter);
 
 app.use((err, req, res, next) => {
     return res.status(err.statusCode || 500).json(new ApiResponse(err.statusCode, err.message, err.success));

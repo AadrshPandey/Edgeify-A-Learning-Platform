@@ -9,12 +9,6 @@ const historySchema = new Schema(
         video_id:{
             type: Schema.Types.ObjectId,
             ref: "Video"
-        },
-        duration:{
-            type: Number
-        },
-        is_completed:{
-            type: Boolean
         }
     },
     {
