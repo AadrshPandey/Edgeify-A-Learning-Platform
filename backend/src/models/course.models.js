@@ -38,7 +38,7 @@ const courseSchema = new Schema(
         },
         category_id:{
             type: Schema.Types.ObjectId,
-            ref:"Cateogry"
+            ref:"Category"
         }
     },
     {

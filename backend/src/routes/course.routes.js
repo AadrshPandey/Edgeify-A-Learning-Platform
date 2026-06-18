@@ -3,13 +3,16 @@ import {
     createCourse, getCourseById,
     getCoursesOfSameCategory, getCoursesOfSameTeacher,
     updateCourseDetails, updateCourseThumbnail,
-    deleteCourse
+    deleteCourse, searchCourses,
+    getPopularCourses
 } from "../controllers/course.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const courseRouter = Router();
 
+courseRouter.route("/search").get(searchCourses);
+courseRouter.route("/popular").get(getPopularCourses);
 courseRouter.route("/teacher/my-courses").get(verifyJWT, getCoursesOfSameTeacher);
 courseRouter.route("/category/:category_id").get(getCoursesOfSameCategory);
 courseRouter.route("/update-details/:course_id").patch(verifyJWT, updateCourseDetails);

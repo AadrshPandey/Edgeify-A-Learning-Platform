@@ -11,6 +11,7 @@ import progressRouter from "./routes/progress.routes.js";
 import enrollmentRouter from "./routes/enrollment.routes.js";
 import reviewRouter from "./routes/review.routes.js";
 import historyRouter from "./routes/history.routes.js";
+import dashboardRouter from "./routes/dashboard.routes.js";
 
 const app = express();
 
@@ -53,6 +54,8 @@ app.use("/api/v1/enrollment", enrollmentRouter);
 app.use("/api/v1/review", reviewRouter);
 //HISTORY ROUTER
 app.use("/api/v1/history", historyRouter);
+//DASHBOARD
+app.use("/api/v1/dashboard", dashboardRouter);
 
 app.use((err, req, res, next) => {
     return res.status(err.statusCode || 500).json(new ApiResponse(err.statusCode, err.message, err.success));

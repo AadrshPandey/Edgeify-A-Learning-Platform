@@ -4,6 +4,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import { Category } from "../models/category.models.js";
+import { Enrollment } from "../models/enrollment.models.js";
 
 const createCourse = asyncHandler(async (req, res) => {
   const { title, description, price, level, language, duration } = req.body;
@@ -211,6 +212,76 @@ const deleteCourse = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Course Deleted Successfully"));
 });
 
+const searchCourses = asyncHandler(async (req, res) => {
+  const { query } = req.query;
+
+  if(!query){
+    throw new ApiError(400, "Query is required");
+  }
+
+  const courses = await Course.find({
+    $or : [
+      {
+        title : {
+          $regex : query,
+          $options : "i"
+        }
+      },
+      {
+        description : {
+          $regex : query,
+          $options : "i"
+        }
+      }
+    ]
+  }).populate("teacher_id category_id");
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200, courses, "Courses fetched successfully"));
+});
+
+const getPopularCourses = asyncHandler(async (req, res) => {
+  const enrollments = await Enrollment.aggregate([
+    {
+      $group : {
+        _id : "$course_id",
+        noOfStudents : {
+          $sum : 1
+        }
+      }
+    },
+    {
+      $sort : {
+        noOfStudents : -1
+      }
+    }
+  ]);
+
+  const courseIDs = enrollments.map((course) => course._id);
+
+  const courses = await Course.find({
+    _id : {
+      $in : courseIDs
+    }
+  });
+
+  const courseMap = {};
+
+  courses.forEach((course) => {
+    courseMap[course._id.toString()] = course;
+  })
+
+  const popularCourse = enrollments.map((enrollment) => ({
+    course : courseMap[enrollment._id.toString()],
+    noOfStudents : enrollment.noOfStudents
+  }));
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200, popularCourse, "Popular Courses fetched successfully"));
+});
+
 export {
   createCourse,
   getCourseById,
@@ -219,4 +290,6 @@ export {
   updateCourseDetails,
   updateCourseThumbnail,
   deleteCourse,
+  searchCourses,
+  getPopularCourses
 };
