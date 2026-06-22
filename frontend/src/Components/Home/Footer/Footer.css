@@ -1,0 +1,64 @@
+/* Footer.css */
+
+.footer {
+  width: 100%;
+  background-color: #fff7f7; /* Black background to match Home.jsx */
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  border-top: 1px solid #1f1f1f; /* Very subtle top line to show page end */
+  margin-top: 4rem; 
+}
+
+.footer-content {
+  width: 70%; /* Matches your Navbar and SearchBar width */
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+/* Brand Section */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.8; /* Faded by default so it's not distracting */
+  transition: opacity 0.3s ease;
+  cursor: default;
+}
+
+.brand:hover {
+  opacity: 1; /* Lights up slightly when hovered */
+}
+
+.logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  object-fit: cover;
+}
+
+.text {
+  color: #000000;
+  font-weight: 1000;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+/* Copyright Text */
+.copyright {
+  color: #6b7280; /* Subtle dark gray */
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+  }
+}

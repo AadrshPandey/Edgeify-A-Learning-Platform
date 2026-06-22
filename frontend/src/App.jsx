@@ -1,71 +1,49 @@
 import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-import Home from './pages/HomePage/home';
-import Login from './pages/LoginPage/Login';
-import Register from './pages/RegisterPage/Register';
-import Courses from './pages/CoursePage/Courses';
-import Profile from './pages/Profile/Profile';
 import { useEffect } from 'react';
-import { useAuth } from './context/AuthContext';
+import Login from './Pages/Login/Login';
+import Register from './Pages/Register/Register';
+import Home from './Pages/Home/Home';
+import Courses from './Pages/Courses/Courses';
+import CourseDetail from './Pages/CourseDetail/CourseDetail';
+import Profile from './Pages/Profile/Profile';
+import VideoPlayer from './Pages/VideoPlayer/VideoPlayer';
+import PublicOnlyRoute from './Services/PublicOnlyRoute';
+import ProtectedRoute from './Services/ProtectedRoute';
 
 function App() {
-
-  const {setUser} = useAuth();
-
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try{
-        const response = await fetch(
-          `/api/v1/user/current-user`,
-          {
-            credentials: 'include'
-          }
-        )
-
-        if(response.ok){
-          const data = await response.json();
-
-          setUser(data.data);
-        }
-        else{
-          console.log("Data Not Fetched");
-        }
-
-      } catch(error){
-        console.log(error);
-      }
-    }
-
-    fetchCurrentUser();
-  }, []);
+  
 
   const Router = createBrowserRouter(
     [
       {
-        path:"/",
-        element:
-        <Home/>
+        path : "/auth/login",
+        element : <PublicOnlyRoute> <Login/> </PublicOnlyRoute>
       },
       {
-        path:"/Login",
-        element:
-        <Login/>
+        path : "/auth/register",
+        element : <PublicOnlyRoute> <Register/> </PublicOnlyRoute>
       },
       {
-        path:"/Register",
-        element:
-        <Register/>
+        path : "/",
+        element : <Home/>
       },
       {
-        path:"/Courses",
-        element:
-        <Courses/>
+        path : "/courses",
+        element : <Courses/>
       },
       {
-        path:"/Profile",
-        element:
-        <Profile/>
+        path : "/courses/:courseId",
+        element : <CourseDetail/>
+      },
+      {
+        path : "/courses/:courseId/:videoId",
+        element : <VideoPlayer/>
+      },
+      {
+        path : "/profile",
+        element : <ProtectedRoute> <Profile/> </ProtectedRoute>
       }
     ]
   );

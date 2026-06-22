@@ -1,0 +1,134 @@
+/* Navbar.css */
+
+.navbar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.navbar-container {
+  width: 70%;
+  padding: 0.5rem 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1F1F1F;
+  border-radius: 0.6rem;
+  border: 1px solid #343537;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Logo Section */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+.logo-image {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+}
+
+/* Navigation Links */
+.nav-links-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.6rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: #8E8F91;
+}
+
+.nav-link:hover {
+  color: white;
+  background-color: #2A2B2D;
+}
+
+.nav-link.active {
+  background-color: #0D51FB;
+  color: white;
+  box-shadow: 0 0 15px rgba(13, 81, 251, 0.3);
+}
+
+/* Override the hover effect if the link is active */
+.nav-link.active:hover {
+  background-color: #0D51FB; 
+}
+
+/* Auth Section */
+.auth-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 0.5rem;
+}
+
+.btn-login {
+  color: #d1d5db; /* Tailwind gray-300 */
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+  font-weight: 500;
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+
+.btn-login:hover {
+  color: white;
+}
+
+.btn-register {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.6rem;
+  background-color: #0D51FB;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 15px -3px rgba(13, 81, 251, 0.2);
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+
+.btn-register:hover {
+  background-color: #103693;
+}
+
+.btn-logout {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid #343537;
+  color: white;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-logout:hover {
+  background-color: rgba(239, 68, 68, 0.1); /* red-500/10 */
+  color: #ef4444; /* red-500 */
+  border-color: #ef4444;
+}

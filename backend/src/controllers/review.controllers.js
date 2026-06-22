@@ -3,6 +3,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { Course } from "../models/course.models.js";
 import { Review } from "../models/review.models.js";
+import updateAverageRating from "../utils/updateAverageRating.js";
 
 const createReview = asyncHandler(async (req, res) => {
     const user_id = req.user?._id;
@@ -38,6 +39,8 @@ const createReview = asyncHandler(async (req, res) => {
     if(!newReview){
         throw new ApiError(400, "Review not created");
     }
+
+    await updateAverageRating(course_id);
 
     return res
     .status(200)
@@ -80,6 +83,8 @@ const updateReview = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Review doesnot updated");
     }
 
+    await updateAverageRating(myReview.course_id);
+
     return res
     .status(200)
     .json(new ApiResponse(200, updatedReview, "Review Updated Successfully"));
@@ -99,7 +104,9 @@ const deleteReview = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Unauthorized access");
     }
 
+    
     await Review.findByIdAndDelete(review_id);
+    await updateAverageRating(myReview.course_id);
 
     return res
     .status(200)

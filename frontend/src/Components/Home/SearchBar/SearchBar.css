@@ -1,0 +1,74 @@
+/* SearchBar.css */
+
+.search-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.search-container {
+  width: 60%; /* Slightly smaller than the 70% navbar for visual hierarchy */
+  max-width: 800px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; /* Light gray border */
+  border-radius: 50px; /* Full pill shape */
+  padding: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s ease;
+}
+
+/* Add a subtle blue glow when the input group is focused/hovered */
+.input-group:focus-within {
+  border-color: #0D51FB;
+  box-shadow: 0 0 0 4px rgba(13, 81, 251, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #9ca3af; /* Gray icon */
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3.5rem; /* Left padding makes room for the icon */
+  font-size: 1.25rem;
+  color: #111827; /* Dark text */
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.search-button {
+  padding: 0.75rem 2rem;
+  background-color: #0D51FB;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 6px -1px rgba(13, 81, 251, 0.2);
+}
+
+.search-button:hover {
+  background-color: #103693;
+}
+
+.search-button:active {
+  transform: scale(0.98);
+}

@@ -277,9 +277,17 @@ const getPopularCourses = asyncHandler(async (req, res) => {
     noOfStudents : enrollment.noOfStudents
   }));
 
+  const result = await Course.find({
+  _id: {
+    $in: courseIDs
+  }
+})
+.populate('teacher_id', 'fullName email')
+.populate('category_id', 'category_name')    
+
   return res
   .status(200)
-  .json(new ApiResponse(200, popularCourse, "Popular Courses fetched successfully"));
+  .json(new ApiResponse(200, result, "Popular Courses fetched successfully"));
 });
 
 export {

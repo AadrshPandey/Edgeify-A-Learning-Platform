@@ -72,7 +72,7 @@ const getStudentsOfCourse = asyncHandler(async (req, res) => {
   const { course_id } = req.params;
   const user_id = req.user?._id;
 
-  if (req.user?.role === "students") {
+  if (req.user?.role === "student") {
     throw new ApiError(403, "Unauthorized Access");
   }
 

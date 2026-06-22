@@ -1,0 +1,49 @@
+/* CategoryChips.css */
+
+.chips-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 2rem 0;
+}
+
+.chips-container {
+  width: 70%; /* Matches the Navbar width */
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap; /* Allows chips to flow to the next line if screen is small */
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.chip-button {
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4b5563; /* Tailwind gray-600 */
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  border-radius: 50px; /* Full pill shape */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.chip-button:hover {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  color: #111827; /* Darker text on hover */
+  border-color: #d1d5db; /* Slightly darker border */
+}
+
+/* Active State */
+.chip-button.active {
+  background-color: #0D51FB;
+  color: #ffffff;
+  border-color: #0D51FB;
+  box-shadow: 0 4px 10px -2px rgba(13, 81, 251, 0.3); /* Subtle blue glow */
+}
+
+/* Optional click animation */
+.chip-button:active {
+  transform: scale(0.95);
+}

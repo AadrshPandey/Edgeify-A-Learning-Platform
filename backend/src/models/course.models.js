@@ -39,6 +39,10 @@ const courseSchema = new Schema(
         category_id:{
             type: Schema.Types.ObjectId,
             ref:"Category"
+        },
+        average_rating : {
+            type: Number,
+            default : 0
         }
     },
     {
