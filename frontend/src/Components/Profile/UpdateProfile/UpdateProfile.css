@@ -1,0 +1,236 @@
+/* UpdateProfile.css */
+
+.update-profile-container {
+  width: 100%;
+  max-width: 800px;
+  color: #ffffff;
+}
+
+.update-profile-header {
+  margin-bottom: 2rem;
+}
+
+.update-profile-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.update-profile-header p {
+  color: #8E8F91;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Status Banners */
+.status-banner {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+  animation: slideDown 0.3s ease-out;
+}
+
+.status-banner.success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-banner.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sections */
+.update-section {
+  margin-bottom: 2rem;
+}
+
+.update-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: #e5e7eb;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #343537;
+  margin: 2.5rem 0;
+}
+
+/* Profile Picture Editor */
+.profile-pic-editor {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.pic-preview-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #050505;
+  border: 2px solid #343537;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pic-preview-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pic-placeholder {
+  color: #8E8F91;
+  font-size: 0.8rem;
+}
+
+.pic-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pic-upload-btn {
+  background-color: #2A2B2D;
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid #343537;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.pic-upload-btn:hover {
+  background-color: #343537;
+  border-color: #4b5563;
+}
+
+.pic-save-btn {
+  background-color: #0D51FB;
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.pic-save-btn:hover:not(:disabled) {
+  background-color: #103693;
+}
+
+/* Forms and Inputs */
+.update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.input-box label {
+  font-size: 0.875rem;
+  color: #8E8F91;
+  font-weight: 500;
+}
+
+.input-box input,
+.input-box textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #050505;
+  border: 1px solid #343537;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.input-box input:focus,
+.input-box textarea:focus {
+  border-color: #0D51FB;
+}
+
+.input-box textarea {
+  resize: vertical;
+}
+
+.disabled-input {
+  background-color: #1a1a1a !important;
+  color: #6b7280 !important;
+  cursor: not-allowed;
+}
+
+/* Submit Buttons */
+.submit-btn {
+  align-self: flex-start;
+  background-color: #2A2B2D;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #343537;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #ffffff;
+  color: #050505;
+}
+
+.password-btn:hover:not(:disabled) {
+  background-color: #ef4444; /* Red hover for security actions */
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+.submit-btn:disabled,
+.pic-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .submit-btn {
+    width: 100%;
+  }
+}

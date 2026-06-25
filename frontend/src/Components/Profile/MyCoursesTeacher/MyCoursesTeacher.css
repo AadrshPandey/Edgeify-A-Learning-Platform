@@ -1,0 +1,259 @@
+/* MyCoursesTeacher.css */
+
+.my-courses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #343537;
+  padding-bottom: 1.5rem;
+}
+
+.courses-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.courses-header p {
+  color: #8E8F91;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.create-btn {
+  background-color: #0D51FB;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-btn:hover {
+  background-color: #103693;
+}
+
+/* --- COURSES GRID --- */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.course-card {
+  background-color: #1a1a1a;
+  border: 1px solid #343537;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  border-color: #4b5563;
+}
+
+.course-img-container {
+  width: 100%;
+  height: 160px;
+  background-color: #050505;
+  position: relative;
+}
+
+.course-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-level-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(5, 5, 5, 0.8);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.course-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.course-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #0D51FB;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.course-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.course-desc {
+  color: #8E8F91;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1; 
+}
+
+.course-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  border-top: 1px solid #343537;
+  padding-top: 1rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.manage-videos-btn {
+  background-color: rgba(13, 81, 251, 0.1);
+  color: #0D51FB;
+  padding: 0.4rem 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.manage-videos-btn:hover {
+  background-color: #0D51FB;
+  color: #ffffff;
+}
+
+/* Edit / Delete Buttons */
+.edit-btn, .delete-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.edit-btn { background-color: #2A2B2D; color: #ffffff; }
+.edit-btn:hover { background-color: #343537; }
+.delete-btn { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.delete-btn:hover { background-color: #ef4444; color: #ffffff; }
+
+/* --- MODAL WIDER LAYOUT --- */
+/* (Reuses core modal styles from MyCategories, but customized for courses) */
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.course-modal {
+  background-color: #1F1F1F;
+  width: 100%;
+  max-width: 650px; /* Wider than categories modal to fit two columns */
+  max-height: 90vh; /* Prevents modal from overflowing screen vertically */
+  overflow-y: auto; /* Allows scrolling inside the modal */
+  border-radius: 1rem;
+  border: 1px solid #343537;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+.form-group select {
+  padding: 0.75rem 1rem;
+  background-color: #050505;
+  border: 1px solid #343537;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  width: 100%;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%238E8F91%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem top 50%;
+  background-size: 0.65rem auto;
+}
+
+.form-group.info input {
+  padding: 0.75rem 1rem;
+  background-color: #050505;
+  border: 1px solid #343537;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  width: 100%;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%238E8F91%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem top 50%;
+  background-size: 0.65rem auto;
+}
+
+.form-group select:focus {
+  border-color: #0D51FB;
+}
+
+/* Mobile Responsiveness for Modal Rows */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
