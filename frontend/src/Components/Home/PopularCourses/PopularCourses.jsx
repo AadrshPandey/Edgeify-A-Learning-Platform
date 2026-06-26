@@ -67,7 +67,7 @@ const PopularCourses = () => {
                   </div>
 
                   <div className="course-footer">
-                    <span className="course-price">${course.price}</span>
+                    <span className="course-price">₹{course.price}</span>
                   </div>
                 </div>
               </div>

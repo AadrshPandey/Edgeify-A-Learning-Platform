@@ -7,6 +7,7 @@ import {
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const progressRouter = Router();
+console.log("Progress router is running");
 
 progressRouter
   .route("/complete/:video_id")

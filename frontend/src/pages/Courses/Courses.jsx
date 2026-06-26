@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Navbar from '../../Components/Home/Navbar/Navbar';
 import Footer from '../../Components/Home/Footer/Footer';
 import './Courses.css';
@@ -12,10 +12,22 @@ const Courses = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false); // To trigger search on enter/click
+
+  //Params
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
   
   // Status
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+
+  //Initial Params filter
+  useEffect(() => {
+  if (initialQuery) {
+    setSearchQuery(initialQuery);
+    setIsSearching(true); // This triggers your fetchCourses useEffect
+  }
+  }, []);
 
   // --- FETCH CATEGORIES FOR THE PILLS ---
   useEffect(() => {
@@ -151,7 +163,7 @@ const Courses = () => {
                       </svg>
                       {course.duration} hrs
                     </span>
-                    <span className="explore-price">${course.price}</span>
+                    <span className="explore-price">₹{course.price}</span>
                   </div>
                 </div>
               </Link>

@@ -126,7 +126,7 @@ const MyHistory = () => {
               <div key={item._id} className="history-card">
                 
                 {/* Thumbnail wrapped in a link to play */}
-                <Link to={`/watch/${video._id}`} className="history-thumbnail">
+                <Link to={`/courses/${video.course_id}/${video._id}`} className="history-thumbnail">
                   <img 
                     src={video.thumbnail || "https://via.placeholder.com/250x140?text=No+Thumbnail"} 
                     alt={video.title} 
@@ -140,7 +140,7 @@ const MyHistory = () => {
                 
                 {/* Details Section */}
                 <div className="history-details">
-                  <Link to={`/watch/${video._id}`} className="history-title">
+                  <Link to={`/courses/${video.course_id}/${video._id}`} className="history-title">
                     {video.title}
                   </Link>
                   <p className="history-meta">

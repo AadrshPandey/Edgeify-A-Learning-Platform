@@ -232,7 +232,7 @@ const MyCoursesTeacher = () => {
               </div>
               <div className="course-content">
                 <div className="course-meta">
-                  <span>${course.price}</span>
+                  <span>₹{course.price}</span>
                   <span>•</span>
                   <span>{course.duration} hrs</span>
                 </div>
@@ -291,7 +291,7 @@ const MyCoursesTeacher = () => {
 
               <div className="form-row">
                 <div className="form-group info">
-                  <label>Price ($)</label>
+                  <label>Price (₹)</label>
                   <input type="number" name="price" value={formData.price} onChange={handleInputChange} required min="0" step="0.01" />
                 </div>
                 <div className="form-group info">

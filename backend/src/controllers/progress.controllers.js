@@ -15,10 +15,18 @@ const markAsComplete = asyncHandler(async (req, res) => {
   }
 
   const course_id = video.course_id;
-  const enrollment = await Enrollment.findOne({ course_id, user_id });
+  let enrollment = await Enrollment.findOne({ course_id, user_id });
 
   if (!enrollment) {
+    if (req.user.role === 'teacher') {
+    enrollment = await Enrollment.create({
+      course_id,
+      user_id,
+      progress_percentage: 0
+    });
+  } else {
     throw new ApiError(403, "Enroll in course first");
+  }
   }
 
   const existingProgress = await Progress.findOne({
@@ -93,10 +101,18 @@ const markAsInComplete = asyncHandler(async (req, res) => {
   }
 
   const course_id = video.course_id;
-  const enrollment = await Enrollment.findOne({ course_id, user_id });
+  let enrollment = await Enrollment.findOne({ course_id, user_id });
 
   if (!enrollment) {
+    if (req.user.role === 'teacher') {
+    enrollment = await Enrollment.create({
+      course_id,
+      user_id,
+      progress_percentage: 0
+    });
+  } else {
     throw new ApiError(403, "Enroll in course first");
+  }
   }
 
   const existingProgress = await Progress.findOne({

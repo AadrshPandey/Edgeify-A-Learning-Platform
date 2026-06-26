@@ -58,6 +58,24 @@ const VideoPlayer = () => {
     fetchLearningData();
   }, [courseId, videoId, navigate]);
 
+  useEffect(() => {
+    const addVideoToHistory = async () => {
+      // If there is no specific video ID yet, don't do anything
+      if (!videoId) return; 
+
+      try {
+        await fetch(`/api/v1/history/create/${videoId}`, {
+          method: 'POST',
+          credentials: 'include' 
+        });
+      } catch (err) {
+        console.error("Failed to add to history:", err.message);
+      }
+    };
+
+    addVideoToHistory();
+  }, [videoId]);
+
   // --- PROGRESS TOGGLE HANDLER ---
   const handleProgressToggle = async (targetVideoId, e) => {
     // Prevent the click from also navigating to the video if they just click the checkbox
@@ -82,7 +100,8 @@ const VideoPlayer = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update progress");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Unknown server error");
       }
     } catch (err) {
       // Revert UI if the API call fails

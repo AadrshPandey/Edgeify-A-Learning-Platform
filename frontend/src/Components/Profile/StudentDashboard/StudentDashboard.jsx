@@ -110,7 +110,7 @@ const StudentDashboard = () => {
         <div className="section-header">
           <h3>Recently Watched</h3>
           {recentHistory.length > 0 && (
-            <Link to="/profile?tab=history" className="view-all-link">View All History</Link>
+            <a href="/profile?tab=history" className="view-all-link">View All History</a>
           )}
         </div>
 
@@ -123,7 +123,7 @@ const StudentDashboard = () => {
           </div>
         ) : (
           <div className="history-list">
-            {recentHistory.map((item) => {
+            {recentHistory.slice(0,5).map((item) => {
               // Extract video details safely (handling cases where a video might have been deleted)
               const video = item.video_id;
               if (!video) return null;
@@ -141,7 +141,7 @@ const StudentDashboard = () => {
                     <h4>{video.title || "Untitled Video"}</h4>
                     <p>Watched on {new Date(item.updatedAt).toLocaleDateString()}</p>
                     {/* Assuming you want to link back to the video player */}
-                    <Link to={`/watch/${video._id}`} className="resume-btn">Resume</Link>
+                    <Link to={`/courses/${video.course_id}/${video._id}`} className="resume-btn">Resume</Link>
                   </div>
                 </div>
               );

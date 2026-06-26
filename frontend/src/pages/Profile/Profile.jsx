@@ -10,12 +10,20 @@ import MyCoursesTeacher from '../../Components/Profile/MyCoursesTeacher/MyCourse
 import MyHistory from '../../Components/Profile/MyHistory/MyHistory';
 import MyCategories from '../../Components/Profile/MyCategories/MyCategories';
 import './Profile.css';
+import { useSearchParams } from 'react-router-dom';
 
 const Profile = () => {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'profile';
   
   // Default to profile settings on load
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  const handleTabClick = (newTab) => {
+    setActiveTab(newTab);
+    setSearchParams({ tab: newTab });
+  };
 
   if (!user) {
     return (
@@ -41,7 +49,7 @@ const Profile = () => {
           <div className="sidebar-nav-group">
             <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Account</h3>
             <button 
-              onClick={() => setActiveTab('profile')}
+              onClick={() => handleTabClick('profile')}
               className={`sidebar-btn ${activeTab === 'profile' ? 'active' : ''}`}
             >
               Account Settings
@@ -54,21 +62,21 @@ const Profile = () => {
               <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Teaching</h3>
               
               <button 
-                onClick={() => setActiveTab('teacher-dashboard')}
+                onClick={() => handleTabClick('teacher-dashboard')}
                 className={`sidebar-btn ${activeTab === 'teacher-dashboard' ? 'active' : ''}`}
               >
                 Instructor Dashboard
               </button>
               
               <button 
-                onClick={() => setActiveTab('teacher-courses')}
+                onClick={() => handleTabClick('teacher-courses')}
                 className={`sidebar-btn ${activeTab === 'teacher-courses' ? 'active' : ''}`}
               >
                 Manage Curriculum
               </button>
               
               <button 
-                onClick={() => setActiveTab('categories')}
+                onClick={() => handleTabClick('categories')}
                 className={`sidebar-btn ${activeTab === 'categories' ? 'active' : ''}`}
               >
                 My Categories
@@ -83,7 +91,7 @@ const Profile = () => {
             {/* Only Students really need the learning dashboard, teachers have their own above */}
             {user.role === 'student' && (
               <button 
-                onClick={() => setActiveTab('student-dashboard')}
+                onClick={() => handleTabClick('student-dashboard')}
                 className={`sidebar-btn ${activeTab === 'student-dashboard' ? 'active' : ''}`}
               >
                 Student Dashboard
@@ -91,14 +99,14 @@ const Profile = () => {
             )}
 
             <button 
-              onClick={() => setActiveTab('enrolled-courses')}
+              onClick={() => handleTabClick('enrolled-courses')}
               className={`sidebar-btn ${activeTab === 'enrolled-courses' ? 'active' : ''}`}
             >
               My Learning
             </button>
 
             <button 
-              onClick={() => setActiveTab('history')}
+              onClick={() => handleTabClick('history')}
               className={`sidebar-btn ${activeTab === 'history' ? 'active' : ''}`}
             >
               Watch History

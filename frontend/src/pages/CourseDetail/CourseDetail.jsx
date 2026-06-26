@@ -20,12 +20,18 @@ const CourseDetail = () => {
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [error, setError] = useState('');
 
+  // --- Review Form States ---
+  const [rating, setRating] = useState(5);
+  const [reviewText, setReviewText] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState('');
+  const [hasReviewed, setHasReviewed] = useState(false);
+
   // --- INITIAL DATA FETCH ---
   useEffect(() => {
     const fetchCourseData = async () => {
       setIsLoading(true);
       try {
-        // We use Promise.all to fetch everything at the exact same time to make the page load faster
         const [courseRes, videoRes, reviewRes] = await Promise.all([
           fetch(`/api/v1/course/${courseId}`),
           fetch(`/api/v1/video/course/${courseId}`),
@@ -40,10 +46,19 @@ const CourseDetail = () => {
 
         setCourse(courseData.data);
         setVideos(videoData.data || []);
-        setReviews(reviewData.data || []);
+        
+        const fetchedReviews = reviewData.data || [];
+        setReviews(fetchedReviews);
 
-        // Check Enrollment status ONLY if the user is logged in
+        // Check Enrollment & Review status ONLY if the user is logged in
         if (user) {
+          // Check if user already left a review
+          const alreadyReviewed = fetchedReviews.some(r => 
+            r.user_id?._id === user._id || r.user_id === user._id
+          );
+          setHasReviewed(alreadyReviewed);
+
+          // Check Enrollment
           const enrollRes = await fetch(`/api/v1/enrollment/is-enrolled/${courseId}`, {
             credentials: 'include'
           });
@@ -51,7 +66,6 @@ const CourseDetail = () => {
           if (enrollRes.ok) {
             setIsUserEnrolled(true);
           } else {
-            // Backend throws 400 if not enrolled. We just set state to false, not throw an error!
             setIsUserEnrolled(false); 
           }
         }
@@ -69,7 +83,6 @@ const CourseDetail = () => {
   // --- ENROLLMENT HANDLER ---
   const handleEnroll = async () => {
     if (!user) {
-      // If they aren't logged in, send them to login, then they can come back
       navigate('/auth/login');
       return;
     }
@@ -87,17 +100,52 @@ const CourseDetail = () => {
       });
 
       const data = await response.json();
-      
       if (!response.ok) throw new Error(data.message || 'Failed to enroll');
       
       setIsUserEnrolled(true);
-      // Optional: Redirect them straight to the first video
-      // if (videos.length > 0) navigate(`/courses/${courseId}/${videos[0]._id}`);
-
     } catch (err) {
       alert(err.message);
     } finally {
       setIsEnrolling(false);
+    }
+  };
+
+  // --- REVIEW SUBMIT HANDLER ---
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!reviewText.trim()) return setReviewError("Review text cannot be empty");
+
+    setIsSubmittingReview(true);
+    setReviewError('');
+
+    try {
+      // NOTE: Ensure this URL matches your backend route for creating a review!
+      const response = await fetch(`/api/v1/review/create/${courseId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating, review: reviewText }),
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to submit review');
+
+      // Optimistically add the new review to the top of the list
+      const newReview = {
+        _id: data.data?._id || Date.now(),
+        user_id: { _id: user._id, fullName: user.fullName || "You" },
+        rating,
+        review: reviewText
+      };
+      
+      setReviews([newReview, ...reviews]);
+      setHasReviewed(true);
+      setReviewText('');
+
+    } catch (err) {
+      setReviewError(err.message);
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -108,7 +156,6 @@ const CourseDetail = () => {
     return (total / reviews.length).toFixed(1);
   };
 
-  // --- RENDER STATES ---
   if (isLoading) return <div className="course-detail-loading"><div className="spinner"></div></div>;
   if (error) return <div className="course-detail-error"><h2>Oops!</h2><p>{error}</p><Link to="/courses">Go back to courses</Link></div>;
   if (!course) return null;
@@ -172,7 +219,52 @@ const CourseDetail = () => {
           {/* Reviews Section */}
           <section className="detail-section">
             <h2>Student Reviews</h2>
-            
+
+            {/* --- NEW: ADD REVIEW FORM --- */}
+            {isUserEnrolled && !hasReviewed && (
+              <div className="add-review-box" style={{ background: '#111', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                <h3>Leave a Review</h3>
+                {reviewError && <p style={{ color: '#ff4444' }}>{reviewError}</p>}
+                
+                <form onSubmit={handleReviewSubmit}>
+                  <div className="star-selector" style={{ marginBottom: '10px', fontSize: '24px', cursor: 'pointer' }}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span 
+                        key={star} 
+                        onClick={() => setRating(star)}
+                        style={{ color: star <= rating ? '#FFD700' : '#444', marginRight: '5px' }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <textarea 
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    placeholder="Tell us what you thought about this course..."
+                    required
+                    style={{ width: '100%', minHeight: '80px', padding: '10px', borderRadius: '4px', background: '#222', color: '#fff', border: '1px solid #333', marginBottom: '10px' }}
+                  />
+                  
+                  <button 
+                    type="submit" 
+                    disabled={isSubmittingReview}
+                    className="action-btn"
+                    style={{ padding: '8px 16px', background: '#0D51FB', color: 'white', border: 'none', borderRadius: '4px' }}
+                  >
+                    {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* If they are enrolled and ALREADY reviewed it */}
+            {isUserEnrolled && hasReviewed && (
+              <p style={{ color: '#888', fontStyle: 'italic', marginBottom: '20px' }}>Thanks for reviewing this course!</p>
+            )}
+
+            {/* List of Reviews */}
             {reviews.length === 0 ? (
               <div className="empty-reviews">No reviews yet. Be the first to enroll and review!</div>
             ) : (
@@ -182,13 +274,13 @@ const CourseDetail = () => {
                     <div className="review-header">
                       <div className="reviewer-info">
                         <div className="reviewer-avatar">
-                          {/* Assuming populated user_id gives fullName */}
                           {review.user_id?.fullName?.charAt(0) || "S"}
                         </div>
                         <span className="reviewer-name">{review.user_id?.fullName || "Student"}</span>
                       </div>
                       <div className="review-stars">
-                        {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                        <span style={{color: '#FFD700'}}>{'★'.repeat(review.rating)}</span>
+                        <span style={{color: '#444'}}>{'★'.repeat(5 - review.rating)}</span>
                       </div>
                     </div>
                     <p className="review-text">{review.review}</p>
@@ -214,7 +306,7 @@ const CourseDetail = () => {
             </div>
 
             <div className="checkout-body">
-              <h2 className="checkout-price">${course.price}</h2>
+              <h2 className="checkout-price">₹{course.price}</h2>
               
               {isUserEnrolled ? (
                 <button 
@@ -232,8 +324,6 @@ const CourseDetail = () => {
                   {isEnrolling ? 'Processing...' : 'Enroll Now'}
                 </button>
               )}
-
-              <p className="guarantee-text">30-Day Money-Back Guarantee</p>
 
               <div className="includes-list">
                 <h3>This course includes:</h3>
