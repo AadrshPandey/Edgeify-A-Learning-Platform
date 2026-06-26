@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import './MyCoursesTeacher.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyCoursesTeacher = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   
   // Data States
   const [courses, setCourses] = useState([]);
@@ -238,7 +240,7 @@ const MyCoursesTeacher = () => {
                 <p className="course-desc">{course.description}</p>
                 
                 <div className="course-actions">
-                  <button className="manage-videos-btn" onClick={() => alert("Navigate to video manager for course: " + course._id)}>
+                  <button className="manage-videos-btn" onClick={() => navigate(`/teacher/course/${course._id}/videos`)}>
                     Videos
                   </button>
                   <div className="action-group">

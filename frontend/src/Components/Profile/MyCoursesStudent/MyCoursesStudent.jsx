@@ -78,7 +78,7 @@ const MyCoursesStudent = () => {
             const course = enrollment.course_id; 
             
             // If for some reason the course was deleted from the DB but enrollment exists
-            if (!course) return null; 
+            if (!course) return <div>Nothing to show</div>;
 
             const progress = enrollment.progress_percentage || 0;
             const isCompleted = progress === 100;
@@ -123,7 +123,7 @@ const MyCoursesStudent = () => {
                   </div>
                   
                   <div className="learning-actions">
-                    <Link to={`/watch/${course._id}`} className="resume-course-btn">
+                    <Link to={`/courses/${course._id}`} className="resume-course-btn">
                       {progress === 0 ? 'Start Course' : isCompleted ? 'Watch Again' : 'Resume Course'}
                     </Link>
                   </div>

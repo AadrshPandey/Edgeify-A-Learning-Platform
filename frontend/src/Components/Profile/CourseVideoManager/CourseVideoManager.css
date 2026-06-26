@@ -1,0 +1,256 @@
+/* CourseVideoManager.css */
+
+.video-manager-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.manager-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #343537;
+  padding-bottom: 1.5rem;
+}
+
+.back-link {
+  color: #8E8F91;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #0D51FB;
+}
+
+.manager-header h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.manager-header p {
+  color: #8E8F91;
+  margin: 0;
+}
+
+/* LAYOUT */
+.manager-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px; /* Left takes remaining space, right is fixed 400px */
+  gap: 3rem;
+}
+
+/* LEFT COLUMN: VIDEO LIST */
+.video-list-section h3, .upload-section h3 {
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem 0;
+  color: #e5e7eb;
+}
+
+.videos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.video-card {
+  display: flex;
+  background-color: #1a1a1a;
+  border: 1px solid #343537;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  height: 90px;
+}
+
+.video-thumb {
+  width: 160px;
+  position: relative;
+  background-color: #050505;
+}
+
+.video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.duration-badge {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.video-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.video-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete-video-btn {
+  align-self: flex-start;
+  background: transparent;
+  color: #ef4444;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.delete-video-btn:hover {
+  text-decoration: underline;
+}
+
+.empty-videos {
+  padding: 3rem;
+  background-color: #1a1a1a;
+  border: 1px dashed #343537;
+  border-radius: 0.75rem;
+  text-align: center;
+  color: #8E8F91;
+}
+
+/* RIGHT COLUMN: UPLOAD FORM */
+.upload-section {
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #343537;
+  height: fit-content;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: #8E8F91;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  background-color: #050505;
+  border: 1px solid #343537;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  border-color: #0D51FB;
+}
+
+.form-group input[type="file"] {
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+/* --- PROGRESS BAR --- */
+.upload-progress-container {
+  background-color: #050505;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #0D51FB;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  color: #60a5fa;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: #1F1F1F;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #0D51FB;
+  border-radius: 10px;
+  transition: width 0.2s ease;
+}
+
+.processing-text {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.8rem;
+  color: #10b981;
+  text-align: center;
+  animation: pulse 1.5s infinite;
+}
+
+.upload-submit-btn {
+  background-color: #0D51FB;
+  color: #fff;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload-submit-btn:hover:not(:disabled) {
+  background-color: #103693;
+}
+
+.upload-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.video-manager-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .manager-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.video-card {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.video-card:hover {
+  border-color: #0D51FB;
+  background-color: #2A2B2D;
+}

@@ -41,12 +41,10 @@ const getMyEnrollments = asyncHandler(async (req, res) => {
     user_id,
   }).populate("course_id");
 
-  const courses = enrollments.map((enrollments) => enrollments.course_id);
-
   return res
     .status(200)
     .json(
-      new ApiResponse(200, courses, "Enrolled Courses fetched successfully"),
+      new ApiResponse(200, enrollments, "Enrolled Courses fetched successfully"),
     );
 });
 

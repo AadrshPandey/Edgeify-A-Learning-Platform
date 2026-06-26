@@ -11,6 +11,7 @@ import Profile from './Pages/Profile/Profile';
 import VideoPlayer from './Pages/VideoPlayer/VideoPlayer';
 import PublicOnlyRoute from './Services/PublicOnlyRoute';
 import ProtectedRoute from './Services/ProtectedRoute';
+import CourseVideoManager from './Components/Profile/CourseVideoManager/CourseVideoManager';
 
 function App() {
   
@@ -44,6 +45,10 @@ function App() {
       {
         path : "/profile",
         element : <ProtectedRoute> <Profile/> </ProtectedRoute>
+      },
+      {
+        path : "/teacher/course/:course_id/videos",
+        element : <CourseVideoManager/>
       }
     ]
   );

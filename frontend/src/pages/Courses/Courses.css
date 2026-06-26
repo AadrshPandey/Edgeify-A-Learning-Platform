@@ -1,0 +1,248 @@
+/* Courses.css */
+.courses-page-wrapper {
+  background-color: #050505;
+  min-height: 100vh;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.courses-main-container {
+  flex: 1;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* --- HERO & SEARCH --- */
+.courses-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.courses-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.courses-hero p {
+  color: #8E8F91;
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+}
+
+.courses-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+  border: 1px solid #343537;
+  border-radius: 50px;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  transition: border-color 0.2s ease;
+}
+
+.courses-search-bar:focus-within {
+  border-color: #0D51FB;
+}
+
+.courses-search-bar svg {
+  width: 20px;
+  height: 20px;
+  color: #8E8F91;
+}
+
+.courses-search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+.courses-search-bar button {
+  background-color: #0D51FB;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.courses-search-bar button:hover {
+  background-color: #103693;
+}
+
+/* --- CATEGORY PILLS --- */
+.category-filters {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  /* Hide scrollbar for cleaner look */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.category-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  white-space: nowrap;
+  background-color: #1a1a1a;
+  color: #d1d5db;
+  border: 1px solid #343537;
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-pill:hover {
+  background-color: #2A2B2D;
+  color: #ffffff;
+}
+
+.category-pill.active {
+  background-color: rgba(13, 81, 251, 0.1);
+  color: #0D51FB;
+  border-color: #0D51FB;
+}
+
+/* --- EXPLORE GRID --- */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.explore-card {
+  background-color: #1a1a1a;
+  border: 1px solid #343537;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.explore-card:hover {
+  transform: translateY(-5px);
+  border-color: #4b5563;
+}
+
+.explore-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  background-color: #050505;
+}
+
+.explore-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.explore-level {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(5, 5, 5, 0.8);
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.explore-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.explore-title {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.explore-teacher {
+  color: #8E8F91;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem 0;
+  flex: 1; /* Pushes footer to the bottom */
+}
+
+.explore-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #343537;
+  padding-top: 1rem;
+}
+
+.explore-duration {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #d1d5db;
+  font-size: 0.85rem;
+}
+
+.explore-duration svg {
+  width: 16px;
+  height: 16px;
+  color: #8E8F91;
+}
+
+.explore-price {
+  color: #0D51FB;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* States */
+.courses-loading, .courses-error, .courses-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  text-align: center;
+  color: #8E8F91;
+}
+
+.courses-empty h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

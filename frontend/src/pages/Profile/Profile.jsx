@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../../Components/Home/Navbar/Navbar';
 import Footer from '../../Components/Home/Footer/Footer';
 import { useAuth } from '../../context/AuthContext';
@@ -13,6 +13,8 @@ import './Profile.css';
 
 const Profile = () => {
   const { user } = useAuth();
+  
+  // Default to profile settings on load
   const [activeTab, setActiveTab] = useState('profile');
 
   if (!user) {
@@ -34,85 +36,93 @@ const Profile = () => {
         
         {/* --- SIDEBAR NAVIGATION --- */}
         <aside className="profile-sidebar">
+          
+          {/* SECTION: ACCOUNT */}
           <div className="sidebar-nav-group">
-            
+            <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Account</h3>
             <button 
               onClick={() => setActiveTab('profile')}
               className={`sidebar-btn ${activeTab === 'profile' ? 'active' : ''}`}
             >
               Account Settings
             </button>
+          </div>
+
+          {/* SECTION: TEACHING (Only visible to teachers) */}
+          {user.role === 'teacher' && (
+            <div className="sidebar-nav-group" style={{ marginTop: '1.5rem' }}>
+              <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Teaching</h3>
+              
+              <button 
+                onClick={() => setActiveTab('teacher-dashboard')}
+                className={`sidebar-btn ${activeTab === 'teacher-dashboard' ? 'active' : ''}`}
+              >
+                Instructor Dashboard
+              </button>
+              
+              <button 
+                onClick={() => setActiveTab('teacher-courses')}
+                className={`sidebar-btn ${activeTab === 'teacher-courses' ? 'active' : ''}`}
+              >
+                Manage Curriculum
+              </button>
+              
+              <button 
+                onClick={() => setActiveTab('categories')}
+                className={`sidebar-btn ${activeTab === 'categories' ? 'active' : ''}`}
+              >
+                My Categories
+              </button>
+            </div>
+          )}
+
+          {/* SECTION: LEARNING (Visible to EVERYONE) */}
+          <div className="sidebar-nav-group" style={{ marginTop: '1.5rem' }}>
+            <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Learning</h3>
             
+            {/* Only Students really need the learning dashboard, teachers have their own above */}
+            {user.role === 'student' && (
+              <button 
+                onClick={() => setActiveTab('student-dashboard')}
+                className={`sidebar-btn ${activeTab === 'student-dashboard' ? 'active' : ''}`}
+              >
+                Student Dashboard
+              </button>
+            )}
+
             <button 
-              onClick={() => setActiveTab('dashboard')}
-              className={`sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveTab('enrolled-courses')}
+              className={`sidebar-btn ${activeTab === 'enrolled-courses' ? 'active' : ''}`}
             >
-              Dashboard
+              My Learning
             </button>
 
-            {/* TEACHER SPECIFIC TABS */}
-            {user.role === 'teacher' && (
-              <>
-                <button 
-                  onClick={() => setActiveTab('categories')}
-                  className={`sidebar-btn ${activeTab === 'categories' ? 'active' : ''}`}
-                >
-                  My Categories
-                </button>
-                <button 
-                  onClick={() => setActiveTab('courses')}
-                  className={`sidebar-btn ${activeTab === 'courses' ? 'active' : ''}`}
-                >
-                  My Courses
-                </button>
-              </>
-            )}
-
-            {/* STUDENT SPECIFIC TABS */}
-            {user.role === 'student' && (
-              <>
-                <button 
-                  onClick={() => setActiveTab('courses')}
-                  className={`sidebar-btn ${activeTab === 'courses' ? 'active' : ''}`}
-                >
-                  My Enrollments
-                </button>
-                <button 
-                  onClick={() => setActiveTab('history')}
-                  className={`sidebar-btn ${activeTab === 'history' ? 'active' : ''}`}
-                >
-                  Watch History
-                </button>
-              </>
-            )}
-
+            <button 
+              onClick={() => setActiveTab('history')}
+              className={`sidebar-btn ${activeTab === 'history' ? 'active' : ''}`}
+            >
+              Watch History
+            </button>
           </div>
+
         </aside>
 
         {/* --- MAIN CONTENT AREA --- */}
         <main className="profile-main-content">
           <div className="tab-fade-in">
             
-            {/* Shared Content */}
+            {/* Account Tab */}
             {activeTab === 'profile' && <UpdateProfile />}
 
-            {/* Student Content */}
-            {user.role === 'student' && (
-              <>
-                {activeTab === 'dashboard' && <StudentDashboard />}
-                {activeTab === 'courses' && <MyCoursesStudent />}
-                {activeTab === 'history' && <MyHistory />}
-              </>
-            )}
+            {/* Teacher Specific Tabs */}
+            {activeTab === 'teacher-dashboard' && <TeacherDashboard />}
+            {activeTab === 'teacher-courses' && <MyCoursesTeacher />}
+            {activeTab === 'categories' && <MyCategories />}
 
-            {/* Teacher Content */}
-            {user.role === 'teacher' && (
-              <>
-                {activeTab === 'dashboard' && <TeacherDashboard />}
-                {activeTab === 'categories' && <MyCategories />}
-                {activeTab === 'courses' && <MyCoursesTeacher />}
-              </>
-            )}
+            {/* Shared/Student Learning Tabs */}
+            {activeTab === 'student-dashboard' && <StudentDashboard />}
+            {activeTab === 'enrolled-courses' && <MyCoursesStudent />}
+            {activeTab === 'history' && <MyHistory />}
 
           </div>
         </main>

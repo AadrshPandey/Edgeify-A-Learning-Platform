@@ -16,12 +16,16 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb; /* Light gray border */
-  border-radius: 50px; /* Full pill shape */
-  padding: 0.5rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-  transition: all 0.3s ease;
+  background-color: #1a1a1a;
+  border: 1px solid #343537;
+  border-radius: 50px;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  transition: border-color 0.2s ease;
+}
+.input-group input{
+  color: white;
 }
 
 /* Add a subtle blue glow when the input group is focused/hovered */

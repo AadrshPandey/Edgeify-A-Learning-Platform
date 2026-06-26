@@ -7,19 +7,16 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      <div className="footer-content">
+      <div className="footer-container">
         
-        {/* Subtle Brand Identity */}
-        <div className="brand">
+        <div className="footer-brand">
           <img src={logo} alt="Edgeify" className="logo" />
-          <span className="text">Edgeify</span>
+          <span className="brand-name">Edgeify</span>
         </div>
 
-        {/* Simple Copyright */}
         <p className="copyright">
-          &copy; {currentYear} All rights reserved.
+          &copy; {currentYear} Edgeify Learning. All rights reserved.
         </p>
-
       </div>
     </footer>
   );
