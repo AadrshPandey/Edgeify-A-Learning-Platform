@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import { useEffect } from 'react';
-import Login from './Pages/Login/Login';
+import Login from './Pages/Login/Login.jsx';
 import Register from './Pages/Register/Register';
 import Home from './Pages/Home/Home';
 import Courses from './Pages/Courses/Courses';
