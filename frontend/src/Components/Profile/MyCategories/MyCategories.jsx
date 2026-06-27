@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import './MyCategories.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const MyCategories = () => {
   const { user } = useAuth();
@@ -15,22 +16,20 @@ const MyCategories = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   // Form States
-  const [currentCategory, setCurrentCategory] = useState(null); // Used for editing
+  const [currentCategory, setCurrentCategory] = useState(null); 
   const [formData, setFormData] = useState({ category_name: '', description: '' });
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // --- FETCH CATEGORIES ---
   const fetchCategories = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/v1/category');
+      const response = await fetch(`${BASE_URL}/api/v1/category`);
       const data = await response.json();
       
       if (!response.ok) throw new Error(data.message || 'Failed to fetch categories');
       
-      // Filter categories so the teacher only sees the ones they created
       const myCategories = data.data.filter(cat => cat.user_id === user._id);
       setCategories(myCategories);
     } catch (err) {
@@ -90,7 +89,7 @@ const MyCategories = () => {
       submitData.append('description', formData.description);
       if (thumbnailFile) submitData.append('thumbnail', thumbnailFile);
 
-      const response = await fetch('/api/v1/category/create', {
+      const response = await fetch(`${BASE_URL}/api/v1/category/create`, {
         method: 'POST',
         body: submitData,
         credentials: 'include'
@@ -109,14 +108,12 @@ const MyCategories = () => {
     }
   };
 
-  // --- UPDATE SUBMIT (Handles Text and Image separately as per backend) ---
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // 1. Update text details
-      const detailRes = await fetch(`/api/v1/category/update-details/${currentCategory._id}`, {
+      const detailRes = await fetch(`${BASE_URL}/api/v1/category/update-details/${currentCategory._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -127,12 +124,11 @@ const MyCategories = () => {
       });
       if (!detailRes.ok) throw new Error("Failed to update details");
 
-      // 2. Update thumbnail if a new file was selected
       if (thumbnailFile) {
         const imageForm = new FormData();
         imageForm.append('thumbnail', thumbnailFile);
         
-        const imageRes = await fetch(`/api/v1/category/update-thumbnail/${currentCategory._id}`, {
+        const imageRes = await fetch(`${BASE_URL}/api/v1/category/update-thumbnail/${currentCategory._id}`, {
           method: 'PATCH',
           body: imageForm,
           credentials: 'include'
@@ -149,12 +145,11 @@ const MyCategories = () => {
     }
   };
 
-  // --- DELETE ---
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category? This cannot be undone.")) return;
 
     try {
-      const response = await fetch(`/api/v1/category/delete/${id}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/category/delete/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -164,7 +159,6 @@ const MyCategories = () => {
         throw new Error(data.message || 'Failed to delete');
       }
 
-      // Remove from UI without fetching again
       setCategories(prev => prev.filter(cat => cat._id !== id));
     } catch (err) {
       alert(err.message);
@@ -172,7 +166,6 @@ const MyCategories = () => {
   };
 
 
-  // --- RENDER ---
   if (isLoading) return <div className="loading-state"><div className="spinner"></div><p>Loading categories...</p></div>;
   if (error) return <div className="error-state"><p>{error}</p><button onClick={fetchCategories}>Retry</button></div>;
 
@@ -189,7 +182,6 @@ const MyCategories = () => {
         </button>
       </div>
 
-      {/* --- CATEGORY GRID --- */}
       {categories.length === 0 ? (
         <div className="empty-state">
           <p>You haven't created any categories yet.</p>
@@ -214,7 +206,6 @@ const MyCategories = () => {
         </div>
       )}
 
-      {/* --- SHARED MODAL COMPONENT --- */}
       {(isCreateModalOpen || isEditModalOpen) && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -261,7 +252,7 @@ const MyCategories = () => {
                     type="file" 
                     accept="image/*" 
                     onChange={handleFileChange} 
-                    required={isCreateModalOpen} // Only strictly required on create
+                    required={isCreateModalOpen}
                   />
                 </div>
               </div>

@@ -2,30 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../Components/Home/Navbar/Navbar';
 import './VideoPlayer.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const VideoPlayer = () => {
   const { courseId, videoId } = useParams();
   const navigate = useNavigate();
 
-  // States
   const [course, setCourse] = useState(null);
   const [videos, setVideos] = useState([]);
   const [completedVideoIds, setCompletedVideoIds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Find the currently active video object based on the URL parameter
   const currentVideo = videos.find(v => v._id === videoId) || videos[0];
 
   useEffect(() => {
     const fetchLearningData = async () => {
       setIsLoading(true);
       try {
-        // Fetch course details, all videos, and the user's completed videos concurrently
         const [courseRes, videosRes, progressRes] = await Promise.all([
-          fetch(`/api/v1/course/${courseId}`),
-          fetch(`/api/v1/video/course/${courseId}`),
-          fetch(`/api/v1/progress/completed-videos`, { credentials: 'include' })
+          fetch(`${BASE_URL}/api/v1/course/${courseId}`),
+          fetch(`${BASE_URL}/api/v1/video/course/${courseId}`),
+          fetch(`${BASE_URL}/api/v1/progress/completed-videos`, { credentials: 'include' })
         ]);
 
         const courseData = await courseRes.json();
@@ -37,13 +35,11 @@ const VideoPlayer = () => {
         setCourse(courseData.data);
         setVideos(videosData.data || []);
 
-        // Extract just the IDs of completed videos for easy checking
         if (progressRes.ok && progressData.data) {
           const completedIds = progressData.data.map(p => p.video_id?._id || p.video_id);
           setCompletedVideoIds(completedIds);
         }
 
-        // If there's no videoId in the URL but we have videos, redirect to the first video
         if (!videoId && videosData.data?.length > 0) {
           navigate(`/courses/${courseId}/${videosData.data[0]._id}`, { replace: true });
         }
@@ -60,11 +56,10 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     const addVideoToHistory = async () => {
-      // If there is no specific video ID yet, don't do anything
       if (!videoId) return; 
 
       try {
-        await fetch(`/api/v1/history/create/${videoId}`, {
+        await fetch(`${BASE_URL}/api/v1/history/create/${videoId}`, {
           method: 'POST',
           credentials: 'include' 
         });
@@ -76,18 +71,15 @@ const VideoPlayer = () => {
     addVideoToHistory();
   }, [videoId]);
 
-  // --- PROGRESS TOGGLE HANDLER ---
   const handleProgressToggle = async (targetVideoId, e) => {
-    // Prevent the click from also navigating to the video if they just click the checkbox
     e.stopPropagation(); 
     
     const isCurrentlyCompleted = completedVideoIds.includes(targetVideoId);
     const endpoint = isCurrentlyCompleted 
-      ? `/api/v1/progress/incomplete/${targetVideoId}` 
-      : `/api/v1/progress/complete/${targetVideoId}`;
+      ? `${BASE_URL}/api/v1/progress/incomplete/${targetVideoId}` 
+      : `${BASE_URL}/api/v1/progress/complete/${targetVideoId}`;
 
     try {
-      // Optimistically update the UI so it feels instantaneous
       if (isCurrentlyCompleted) {
         setCompletedVideoIds(prev => prev.filter(id => id !== targetVideoId));
       } else {
@@ -104,7 +96,6 @@ const VideoPlayer = () => {
         throw new Error(errorData.message || "Unknown server error");
       }
     } catch (err) {
-      // Revert UI if the API call fails
       alert(err.message);
       if (isCurrentlyCompleted) {
         setCompletedVideoIds(prev => [...prev, targetVideoId]);
@@ -124,12 +115,11 @@ const VideoPlayer = () => {
 
       <div className="vp-layout">
         
-        {/* --- LEFT SIDE: VIDEO PLAYER --- */}
         <div className="vp-main-content">
           <div className="vp-video-container">
             {currentVideo ? (
               <video 
-                key={currentVideo.video_url} // Forces react to reload player on src change
+                key={currentVideo.video_url}
                 controls 
                 autoPlay 
                 controlsList="nodownload"
@@ -154,7 +144,6 @@ const VideoPlayer = () => {
           </div>
         </div>
 
-        {/* --- RIGHT SIDE: CURRICULUM SIDEBAR --- */}
         <div className="vp-sidebar">
           <div className="vp-sidebar-header">
             <h2>Course Content</h2>

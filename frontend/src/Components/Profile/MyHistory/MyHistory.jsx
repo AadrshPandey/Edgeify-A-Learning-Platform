@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './MyHistory.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const MyHistory = () => {
   const [historyItems, setHistoryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // --- FETCH HISTORY ---
   const fetchHistory = async () => {
     setIsLoading(true);
     try {
-      // Adjust the route prefix if necessary (e.g., /api/v1/history/...)
-      const response = await fetch('/api/v1/history/myHistory', {
+      const response = await fetch(`${BASE_URL}/api/v1/history/myHistory`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -31,10 +30,9 @@ const MyHistory = () => {
     fetchHistory();
   }, []);
 
-  // --- REMOVE SINGLE ITEM ---
   const handleRemove = async (videoId) => {
     try {
-      const response = await fetch(`/api/v1/history/removeVideo/${videoId}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/history/removeVideo/${videoId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -44,19 +42,17 @@ const MyHistory = () => {
         throw new Error(data.message || 'Failed to remove video');
       }
 
-      // Optimistically remove from UI
       setHistoryItems(prev => prev.filter(item => item.video_id?._id !== videoId));
     } catch (err) {
       alert(err.message);
     }
   };
 
-  // --- CLEAR ALL HISTORY ---
   const handleClearAll = async () => {
     if (!window.confirm("Are you sure you want to clear your entire watch history? This cannot be undone.")) return;
 
     try {
-      const response = await fetch('/api/v1/history/clearHistory', {
+      const response = await fetch(`${BASE_URL}/api/v1/history/clearHistory`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -66,14 +62,12 @@ const MyHistory = () => {
         throw new Error(data.message || 'Failed to clear history');
       }
 
-      // Empty the UI list
       setHistoryItems([]);
     } catch (err) {
       alert(err.message);
     }
   };
 
-  // --- RENDER STATES ---
   if (isLoading) {
     return (
       <div className="history-loading-state">
@@ -119,13 +113,11 @@ const MyHistory = () => {
           {historyItems.map((item) => {
             const video = item.video_id;
             
-            // Safety check: if the video was deleted from the DB but history remains
             if (!video) return null;
 
             return (
               <div key={item._id} className="history-card">
                 
-                {/* Thumbnail wrapped in a link to play */}
                 <Link to={`/courses/${video.course_id}/${video._id}`} className="history-thumbnail">
                   <img 
                     src={video.thumbnail || "https://via.placeholder.com/250x140?text=No+Thumbnail"} 
@@ -138,7 +130,6 @@ const MyHistory = () => {
                   </div>
                 </Link>
                 
-                {/* Details Section */}
                 <div className="history-details">
                   <Link to={`/courses/${video.course_id}/${video._id}`} className="history-title">
                     {video.title}
@@ -153,7 +144,6 @@ const MyHistory = () => {
                   <p className="history-desc">{video.description}</p>
                 </div>
 
-                {/* Remove Button */}
                 <button 
                   className="remove-item-btn" 
                   onClick={() => handleRemove(video._id)}

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CourseVideoManager.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const CourseVideoManager = () => {
   const { course_id } = useParams(); 
-  const navigate = useNavigate(); // <-- Initialized here
+  const navigate = useNavigate();
   
   // States
   const [videos, setVideos] = useState([]);
@@ -28,7 +29,7 @@ const CourseVideoManager = () => {
   // --- FETCH EXISTING VIDEOS ---
   const fetchVideos = async () => {
     try {
-      const response = await fetch(`/api/v1/video/course/${course_id}`);
+      const response = await fetch(`${BASE_URL}/api/v1/video/course/${course_id}`);
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       setVideos(data.data);
@@ -65,7 +66,7 @@ const CourseVideoManager = () => {
 
     try {
       const response = await axios.post(
-        `/api/v1/video/upload/${course_id}`, 
+        `${BASE_URL}/api/v1/video/upload/${course_id}`, 
         submitData,
         {
           withCredentials: true, 
@@ -100,7 +101,7 @@ const CourseVideoManager = () => {
     if (!window.confirm("Delete this video permanently?")) return;
 
     try {
-      const response = await fetch(`/api/v1/video/delete/${videoId}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/video/delete/${videoId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -117,7 +118,6 @@ const CourseVideoManager = () => {
   return (
     <div className="video-manager-container">
       
-      {/* HEADER */}
       <div className="manager-header">
         <div>
           <Link to="/profile" className="back-link">← Back to Courses</Link>
@@ -128,7 +128,6 @@ const CourseVideoManager = () => {
 
       <div className="manager-layout">
         
-        {/* LEFT COL: VIDEO LIST */}
         <div className="video-list-section">
           <h3>Uploaded Videos ({videos.length})</h3>
           
@@ -140,7 +139,7 @@ const CourseVideoManager = () => {
                 <div 
                   key={video._id} 
                   className="video-card"
-                  onClick={() => navigate(`/courses/${course_id}/${video._id}`)} // <-- Navigate to player
+                  onClick={() => navigate(`/courses/${course_id}/${video._id}`)} 
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="video-thumb">
@@ -152,7 +151,7 @@ const CourseVideoManager = () => {
                     <button 
                       className="delete-video-btn" 
                       onClick={(e) => {
-                        e.stopPropagation(); // <-- Prevents the card click when deleting
+                        e.stopPropagation(); 
                         handleDelete(video._id);
                       }}
                     >
@@ -165,7 +164,6 @@ const CourseVideoManager = () => {
           )}
         </div>
 
-        {/* RIGHT COL: UPLOAD FORM */}
         <div className="upload-section">
           <h3>Upload New Video</h3>
           
@@ -197,7 +195,6 @@ const CourseVideoManager = () => {
               </div>
             </div>
 
-            {/* PROGRESS BAR UI */}
             {isUploading && (
               <div className="upload-progress-container">
                 <div className="progress-text">

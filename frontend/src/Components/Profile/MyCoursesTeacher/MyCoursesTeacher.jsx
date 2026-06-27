@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import './MyCoursesTeacher.css';
 import { useNavigate } from 'react-router-dom';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const MyCoursesTeacher = () => {
   const { user } = useAuth();
@@ -24,19 +25,18 @@ const MyCoursesTeacher = () => {
     title: '',
     description: '',
     price: '',
-    level: 'Beginner', // Default value
+    level: 'Beginner',
     language: '',
     duration: '',
-    category_id: '' // Only needed for creation
+    category_id: '' 
   });
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
 
-  // --- INITIAL DATA FETCH ---
   const fetchMyCourses = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/v1/course/teacher/my-courses', { credentials: 'include' });
+      const response = await fetch(`${BASE_URL}/api/v1/course/teacher/my-courses`, { credentials: 'include' });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to fetch courses');
       setCourses(data.data);
@@ -49,7 +49,7 @@ const MyCoursesTeacher = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/v1/category');
+      const response = await fetch(`${BASE_URL}/api/v1/category`);
       const data = await response.json();
       if (response.ok) setCategories(data.data);
     } catch (err) {
@@ -62,7 +62,6 @@ const MyCoursesTeacher = () => {
     fetchCategories();
   }, []);
 
-  // --- MODAL & INPUT HANDLERS ---
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -92,7 +91,7 @@ const MyCoursesTeacher = () => {
       level: course.level,
       language: course.language,
       duration: course.duration,
-      category_id: course.category_id // Note: Backend doesn't support changing this on update yet
+      category_id: course.category_id 
     });
     setThumbnailFile(null);
     setPreviewImage(course.thumbnail || '');
@@ -105,7 +104,6 @@ const MyCoursesTeacher = () => {
     setCurrentCourse(null);
   };
 
-  // --- API CALLS ---
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
     if (!formData.category_id) return alert("Please select a category");
@@ -121,8 +119,7 @@ const MyCoursesTeacher = () => {
       submitData.append('duration', formData.duration);
       if (thumbnailFile) submitData.append('thumbnail', thumbnailFile);
 
-      // Pass category_id in the URL based on your router setup
-      const response = await fetch(`/api/v1/course/create/${formData.category_id}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/course/create/${formData.category_id}`, {
         method: 'POST',
         body: submitData,
         credentials: 'include'
@@ -145,8 +142,7 @@ const MyCoursesTeacher = () => {
     setIsSubmitting(true);
 
     try {
-      // 1. Update text details (JSON)
-      const detailRes = await fetch(`/api/v1/course/update-details/${currentCourse._id}`, {
+      const detailRes = await fetch(`${BASE_URL}/api/v1/course/update-details/${currentCourse._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -161,12 +157,11 @@ const MyCoursesTeacher = () => {
       });
       if (!detailRes.ok) throw new Error("Failed to update details");
 
-      // 2. Update thumbnail if new one selected (FormData)
       if (thumbnailFile) {
         const imageForm = new FormData();
         imageForm.append('thumbnail', thumbnailFile);
         
-        const imageRes = await fetch(`/api/v1/course/update-thumbnail/${currentCourse._id}`, {
+        const imageRes = await fetch(`${BASE_URL}/api/v1/course/update-thumbnail/${currentCourse._id}`, {
           method: 'PATCH',
           body: imageForm,
           credentials: 'include'
@@ -187,7 +182,7 @@ const MyCoursesTeacher = () => {
     if (!window.confirm("Delete this course permanently? This action cannot be undone.")) return;
 
     try {
-      const response = await fetch(`/api/v1/course/delete/${id}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/course/delete/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -200,7 +195,6 @@ const MyCoursesTeacher = () => {
   };
 
 
-  // --- RENDER ---
   if (isLoading) return <div className="loading-state"><div className="spinner"></div><p>Loading courses...</p></div>;
   if (error) return <div className="error-state"><p>{error}</p><button onClick={fetchMyCourses}>Retry</button></div>;
 
@@ -217,7 +211,6 @@ const MyCoursesTeacher = () => {
         </button>
       </div>
 
-      {/* --- COURSES GRID --- */}
       {courses.length === 0 ? (
         <div className="empty-state">
           <p>You haven't created any courses yet.</p>
@@ -254,7 +247,6 @@ const MyCoursesTeacher = () => {
         </div>
       )}
 
-      {/* --- CREATE / EDIT MODAL --- */}
       {(isCreateModalOpen || isEditModalOpen) && (
         <div className="modal-overlay">
           <div className="modal-content course-modal">
@@ -270,7 +262,6 @@ const MyCoursesTeacher = () => {
                   <label>Course Title</label>
                   <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
                 </div>
-                {/* Only allow category selection on create (based on your backend logic) */}
                 {isCreateModalOpen && (
                   <div className="form-group flex-1">
                     <label>Category</label>

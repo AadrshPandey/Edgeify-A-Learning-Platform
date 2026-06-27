@@ -17,7 +17,6 @@ const Profile = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'profile';
   
-  // Default to profile settings on load
   const [activeTab, setActiveTab] = useState(initialTab);
 
   const handleTabClick = (newTab) => {
@@ -42,10 +41,8 @@ const Profile = () => {
       
       <div className="profile-container">
         
-        {/* --- SIDEBAR NAVIGATION --- */}
         <aside className="profile-sidebar">
           
-          {/* SECTION: ACCOUNT */}
           <div className="sidebar-nav-group">
             <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Account</h3>
             <button 
@@ -56,7 +53,6 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* SECTION: TEACHING (Only visible to teachers) */}
           {user.role === 'teacher' && (
             <div className="sidebar-nav-group" style={{ marginTop: '1.5rem' }}>
               <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Teaching</h3>
@@ -84,11 +80,9 @@ const Profile = () => {
             </div>
           )}
 
-          {/* SECTION: LEARNING (Visible to EVERYONE) */}
           <div className="sidebar-nav-group" style={{ marginTop: '1.5rem' }}>
             <h3 className="sidebar-section-title" style={{ fontSize: '0.75rem', color: '#8E8F91', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0.5rem' }}>Learning</h3>
             
-            {/* Only Students really need the learning dashboard, teachers have their own above */}
             {user.role === 'student' && (
               <button 
                 onClick={() => handleTabClick('student-dashboard')}
@@ -115,19 +109,15 @@ const Profile = () => {
 
         </aside>
 
-        {/* --- MAIN CONTENT AREA --- */}
         <main className="profile-main-content">
           <div className="tab-fade-in">
             
-            {/* Account Tab */}
             {activeTab === 'profile' && <UpdateProfile />}
 
-            {/* Teacher Specific Tabs */}
             {activeTab === 'teacher-dashboard' && <TeacherDashboard />}
             {activeTab === 'teacher-courses' && <MyCoursesTeacher />}
             {activeTab === 'categories' && <MyCategories />}
 
-            {/* Shared/Student Learning Tabs */}
             {activeTab === 'student-dashboard' && <StudentDashboard />}
             {activeTab === 'enrolled-courses' && <MyCoursesStudent />}
             {activeTab === 'history' && <MyHistory />}

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import Navbar from '../../Components/Home/Navbar/Navbar';
 import Footer from '../../Components/Home/Footer/Footer';
 import './Courses.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -16,7 +17,7 @@ const Courses = () => {
   // Filters
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false); // To trigger search on enter/click
+  const [isSearching, setIsSearching] = useState(false);
   
   // Status
   const [isLoading, setIsLoading] = useState(true);
@@ -26,15 +27,14 @@ const Courses = () => {
   useEffect(() => {
   if (initialQuery) {
     setSearchQuery(initialQuery);
-    setIsSearching(true); // This triggers your fetchCourses useEffect
+    setIsSearching(true);
   }
   }, []);
 
-  // --- FETCH CATEGORIES FOR THE PILLS ---
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/v1/category');
+        const response = await fetch(`${BASE_URL}/api/v1/category`);
         const data = await response.json();
         if (response.ok) setCategories(data.data);
       } catch (err) {
@@ -44,19 +44,18 @@ const Courses = () => {
     fetchCategories();
   }, []);
 
-  // --- FETCH COURSES BASED ON FILTERS ---
   useEffect(() => {
     const fetchCourses = async () => {
       setIsLoading(true);
       setError('');
       
       try {
-        let url = '/api/v1/course/popular'; // Default view
+        let url = `${BASE_URL}/api/v1/course/popular`;
 
         if (searchQuery && isSearching) {
-          url = `/api/v1/course/search?query=${encodeURIComponent(searchQuery)}`;
+          url = `${BASE_URL}/api/v1/course/search?query=${encodeURIComponent(searchQuery)}`;
         } else if (activeCategory !== 'All') {
-          url = `/api/v1/course/category/${activeCategory}`;
+          url = `${BASE_URL}/api/v1/course/category/${activeCategory}`;
         }
 
         const response = await fetch(url);
@@ -69,27 +68,27 @@ const Courses = () => {
         setError(err.message);
       } finally {
         setIsLoading(false);
-        setIsSearching(false); // Reset search trigger
+        setIsSearching(false); 
       }
     };
 
     fetchCourses();
-  }, [activeCategory, isSearching]); // Re-run when category changes or search is submitted
+  }, [activeCategory, isSearching]); 
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setActiveCategory('All'); // Reset category when searching
+    setActiveCategory('All'); 
     setIsSearching(true);
 
     if (searchQuery.trim()) {
       setSearchParams({ q: searchQuery }); 
     } else {
-      setSearchParams({}); // Clears the URL if search is empty
+      setSearchParams({}); 
     }
   };
 
   const handleCategoryClick = (categoryId) => {
-    setSearchQuery(''); // Clear search when clicking a category
+    setSearchQuery(''); 
     setActiveCategory(categoryId);
 
     if (categoryId === 'All') {
@@ -105,7 +104,6 @@ const Courses = () => {
       
       <main className="courses-main-container">
         
-        {/* HERO & SEARCH SECTION */}
         <section className="courses-hero">
           <h1>Explore Our Catalog</h1>
           <p>Find the perfect course to advance your skills and career.</p>
@@ -124,7 +122,6 @@ const Courses = () => {
           </form>
         </section>
 
-        {/* CATEGORY PILLS */}
         <section className="category-filters">
           <button 
             className={`category-pill ${activeCategory === 'All' ? 'active' : ''}`}
@@ -144,7 +141,6 @@ const Courses = () => {
           ))}
         </section>
 
-        {/* COURSES GRID */}
         {isLoading ? (
           <div className="courses-loading"><div className="spinner"></div></div>
         ) : error ? (
@@ -165,7 +161,6 @@ const Courses = () => {
                 <div className="explore-content">
                   <h3 className="explore-title">{course.title}</h3>
                   <p className="explore-teacher">
-                    {/* Handle different population formats based on the endpoint used */}
                     {course.teacher_id?.fullName || "Instructor"}
                   </p>
                   

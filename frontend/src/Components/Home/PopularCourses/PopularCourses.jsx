@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PopularCourses.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const PopularCourses = () => {
   const [courses, setCourses] = useState([])
@@ -10,7 +11,7 @@ const PopularCourses = () => {
   useEffect(() => {
     const fetchPopularCourses = async () => {
       try {
-        const res = await fetch('/api/v1/course/popular', { credentials: 'include' })
+        const res = await fetch(`${BASE_URL}/api/v1/course/popular`, { credentials: 'include' })
         const data = await res.json()
         setCourses(data.data)
       } catch (err) {

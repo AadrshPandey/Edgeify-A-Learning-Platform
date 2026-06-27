@@ -29,7 +29,7 @@ app.use(cors({
             callback(null, true);
         }
         else{
-            callback(new ApiError(200, "Not allowed by CORS"));
+            callback(new ApiError(405, "Not allowed by CORS"));
         }
     },
     credentials: true

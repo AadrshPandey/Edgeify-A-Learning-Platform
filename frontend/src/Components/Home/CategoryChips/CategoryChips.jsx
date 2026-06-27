@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CategoryChips.css";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const CategoryChips = ({ onCategorySelect }) => {
   const [categories, setCategories] = useState([]);
@@ -9,11 +10,11 @@ const CategoryChips = ({ onCategorySelect }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/api/v1/category/", {
+        const res = await fetch(`${BASE_URL}/api/v1/category/`, {
           credentials: "include",
         });
         const data = await res.json();
-        setCategories(data.data); // array of {_id, name, ...}
+        setCategories(data.data); 
       } catch (err) {
         console.log(err);
       } finally {
@@ -26,7 +27,7 @@ const CategoryChips = ({ onCategorySelect }) => {
   const handleChipClick = (categoryId) => {
     setActiveCategory(categoryId);
     if (onCategorySelect) {
-      onCategorySelect(categoryId); // sends _id up to parent, not name
+      onCategorySelect(categoryId); 
     }
   };
 
@@ -35,7 +36,6 @@ const CategoryChips = ({ onCategorySelect }) => {
   return (
     <div className="chips-wrapper">
       <div className="chips-container">
-        {/* All chip — hardcoded, always first */}
         <button
           onClick={() => handleChipClick("all")}
           className={`chip-button ${activeCategory === "all" ? "active" : ""}`}
@@ -43,7 +43,6 @@ const CategoryChips = ({ onCategorySelect }) => {
           All
         </button>
 
-        {/* Dynamic chips from API */}
         {categories.map((cat) => (
           <button
             key={cat._id}

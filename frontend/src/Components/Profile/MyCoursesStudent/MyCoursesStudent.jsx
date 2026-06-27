@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './MyCoursesStudent.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const MyCoursesStudent = () => {
   const [enrollments, setEnrollments] = useState([]);
@@ -10,8 +11,7 @@ const MyCoursesStudent = () => {
   useEffect(() => {
     const fetchMyEnrollments = async () => {
       try {
-        // Adjust this endpoint based on your actual enrollment routes
-        const response = await fetch('/api/v1/enrollment/my-enrollments', {
+        const response = await fetch(`${BASE_URL}/api/v1/enrollment/my-enrollments`, {
           credentials: 'include'
         });
 
@@ -63,7 +63,6 @@ const MyCoursesStudent = () => {
         </Link>
       </div>
 
-      {/* --- ENROLLMENTS GRID --- */}
       {enrollments.length === 0 ? (
         <div className="empty-learning-state">
           <div className="empty-icon">🎓</div>
@@ -74,10 +73,8 @@ const MyCoursesStudent = () => {
       ) : (
         <div className="learning-grid">
           {enrollments.map((enrollment) => {
-            // Safely extract the nested course object
             const course = enrollment.course_id; 
             
-            // If for some reason the course was deleted from the DB but enrollment exists
             if (!course) return <div>Nothing to show</div>;
 
             const progress = enrollment.progress_percentage || 0;
@@ -104,7 +101,6 @@ const MyCoursesStudent = () => {
                   <div className="learning-meta">
                     <span>{course.level || 'All Levels'}</span>
                     <span>•</span>
-                    {/* Assuming you populated the teacher_id to get the name */}
                     <span>{course.teacher_id?.fullName || 'Instructor'}</span>
                   </div>
                   

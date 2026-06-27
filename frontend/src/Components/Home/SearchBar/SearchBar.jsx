@@ -18,7 +18,6 @@ const SearchBar = ({ onSearch }) => {
       <form onSubmit={handleSubmit} className="search-container">
         <div className="input-group">
           
-          {/* Search Icon */}
           <svg 
             className="search-icon" 
             xmlns="http://www.w3.org/2000/svg" 
@@ -33,7 +32,6 @@ const SearchBar = ({ onSearch }) => {
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
 
-          {/* Input Field */}
           <input
             type="text"
             className="search-input"
@@ -42,7 +40,6 @@ const SearchBar = ({ onSearch }) => {
             onChange={(e) => setQuery(e.target.value)}
           />
 
-          {/* Submit Button */}
           <button type="submit" className="search-button">
             Search
           </button>

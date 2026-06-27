@@ -3,6 +3,7 @@ import { BounceLoader } from 'react-spinners';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Home/Navbar/Navbar'; // Adjust path if needed
 import './Register.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -62,10 +63,8 @@ const Register = () => {
         submitData.append('profile_Pic', profilePic); 
       }
 
-      const response = await fetch('/api/v1/user/register', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/register`, {
         method: 'POST',
-        // Note: DO NOT set 'Content-Type' manually when using FormData. 
-        // The browser will automatically set it to 'multipart/form-data' with the correct boundary.
         body: submitData 
       });
 
@@ -91,7 +90,6 @@ const Register = () => {
 
       {isLoading && (
         <div className="loading-overlay">
-          {/* Drop the react-spinner here instead of the CSS div */}
           <BounceLoader color="#0D51FB" size={60} speedMultiplier={1.5} />
           <p className="loading-text">Authenticating...</p>
         </div>
@@ -102,7 +100,6 @@ const Register = () => {
       </div>
 
       <div className="register-content">
-        {/* Unified, single-column card */}
         <div className="register-card">
           
           <div className="register-header">
@@ -114,7 +111,6 @@ const Register = () => {
 
           <form onSubmit={handleSubmit} className="register-form">
             
-            {/* Top Centered Profile Picture Section */}
             <div className="profile-upload-section">
               <div className="profile-image-circle">
                 {profilePicPreview ? (
@@ -141,7 +137,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Form Inputs */}
             <div className="register-form-row">
               <div className="register-input-group">
                 <label htmlFor="username">Username</label>

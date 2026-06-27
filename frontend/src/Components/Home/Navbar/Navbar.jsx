@@ -2,7 +2,8 @@ import React from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from "../../../assets/edgeifylogo.png";
-import './Navbar.css'; // Make sure this path is correct
+import './Navbar.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Navbar = () => {
   const { user, setUser } = useAuth();
@@ -10,7 +11,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/v1/user/logout', {
+      await fetch(`${BASE_URL}/api/v1/user/logout`, {
         method: "POST",
         credentials: "include"
       });
@@ -29,7 +30,6 @@ const Navbar = () => {
     <div className="navbar-wrapper">
       <nav className="navbar-container">
         
-        {/* Logo Section */}
         <div className="logo-section">
           <img
             src={logo}
@@ -41,7 +41,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Navigation Links */}
         <div className="nav-links-container">
           <NavLink to="/" className={navLinkClass}>
             Home
@@ -58,7 +57,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Auth Buttons */}
         <div className="auth-container">
           {!user ? (
             <>

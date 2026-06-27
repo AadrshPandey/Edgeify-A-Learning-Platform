@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './TeacherDashboard.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const TeacherDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -10,8 +11,7 @@ const TeacherDashboard = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        // Adjust this URL if your router uses a different path in app.js
-        const response = await fetch('/api/v1/dashboard/teacher', {
+        const response = await fetch(`${BASE_URL}/api/v1/dashboard/teacher`, {
           credentials: 'include'
         });
 
@@ -50,7 +50,6 @@ const TeacherDashboard = () => {
     );
   }
 
-  // Destructure the data sent from your backend
   const { 
     totalCourses = 0, 
     totalVideos = 0, 
@@ -66,10 +65,8 @@ const TeacherDashboard = () => {
         <p>Here is an overview of your teaching impact and content.</p>
       </div>
 
-      {/* --- STATS GRID --- */}
       <div className="teacher-stats-grid">
         
-        {/* Total Students */}
         <div className="teacher-stat-card">
           <div className="stat-icon students-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +79,6 @@ const TeacherDashboard = () => {
           </div>
         </div>
 
-        {/* Total Courses */}
         <div className="teacher-stat-card">
           <div className="stat-icon courses-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,7 +91,6 @@ const TeacherDashboard = () => {
           </div>
         </div>
 
-        {/* Total Videos */}
         <div className="teacher-stat-card">
           <div className="stat-icon videos-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,7 +103,6 @@ const TeacherDashboard = () => {
           </div>
         </div>
 
-        {/* Average Rating */}
         <div className="teacher-stat-card rating-card">
           <div className="stat-icon rating-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -123,7 +117,6 @@ const TeacherDashboard = () => {
 
       </div>
 
-      {/* --- QUICK ACTIONS SECTION --- */}
       <div className="teacher-quick-actions">
         <h3>Quick Actions</h3>
         <div className="actions-grid">

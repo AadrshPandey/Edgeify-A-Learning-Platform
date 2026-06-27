@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import './UpdateProfile.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const UpdateProfile = () => {
   const {user, setUser} = useAuth();
 
-  // --- States for the 3 distinct forms ---
   const [details, setDetails] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',
@@ -22,8 +22,8 @@ const UpdateProfile = () => {
   const [previewPic, setPreviewPic] = useState(user?.profile_Pic || '');
 
   // --- Status States ---
-  const [loadingType, setLoadingType] = useState(null); // 'details', 'pic', or 'password'
-  const [message, setMessage] = useState({ type: '', text: '' }); // type: 'success' | 'error'
+  const [loadingType, setLoadingType] = useState(null); 
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   // Clear message after 5 seconds
   useEffect(() => {
@@ -33,7 +33,6 @@ const UpdateProfile = () => {
     }
   }, [message]);
 
-  // --- Handlers ---
   const handleDetailsChange = (e) => {
     const { name, value } = e.target;
     setDetails(prev => ({ ...prev, [name]: value }));
@@ -52,13 +51,12 @@ const UpdateProfile = () => {
     }
   };
 
-  // --- Submissions ---
   const submitDetails = async (e) => {
     e.preventDefault();
     setLoadingType('details');
     
     try {
-      const response = await fetch('/api/v1/user/profile', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/profile`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details),
@@ -68,7 +66,6 @@ const UpdateProfile = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to update details');
 
-      // Update global context so Navbar reflects changes immediately
       setUser(data.data); 
       setMessage({ type: 'success', text: 'Account details updated successfully!' });
     } catch (error) {
@@ -85,10 +82,9 @@ const UpdateProfile = () => {
 
     try {
       const formData = new FormData();
-      // Must match the upload.single("profile_Pic") in your backend route!
       formData.append('profile_Pic', profilePic); 
 
-      const response = await fetch('/api/v1/user/change-profilePic', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/change-profilePic`, {
         method: 'PATCH',
         body: formData,
         credentials: 'include'
@@ -97,9 +93,8 @@ const UpdateProfile = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to update photo');
 
-      // Optimistically update the context image so Navbar changes instantly
       setUser(prev => ({ ...prev, profile_Pic: previewPic }));
-      setProfilePic(null); // Reset file input state
+      setProfilePic(null);
       setMessage({ type: 'success', text: 'Profile photo updated successfully!' });
     } catch (error) {
       setMessage({ type: 'error', text: error.message });
@@ -118,7 +113,7 @@ const UpdateProfile = () => {
     setLoadingType('password');
 
     try {
-      const response = await fetch('/api/v1/user/change-password', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/change-password`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -131,7 +126,6 @@ const UpdateProfile = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to change password');
 
-      // Clear the form on success
       setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' });
       setMessage({ type: 'success', text: 'Password changed successfully!' });
     } catch (error) {
@@ -148,14 +142,12 @@ const UpdateProfile = () => {
         <p>Manage your profile information and security.</p>
       </div>
 
-      {/* Global Status Message */}
       {message.text && (
         <div className={`status-banner ${message.type}`}>
           {message.text}
         </div>
       )}
 
-      {/* SECTION 1: Profile Picture */}
       <section className="update-section">
         <h3>Profile Picture</h3>
         <div className="profile-pic-editor">
@@ -193,7 +185,6 @@ const UpdateProfile = () => {
 
       <hr className="section-divider" />
 
-      {/* SECTION 2: Account Details */}
       <section className="update-section">
         <h3>Personal Information</h3>
         <form onSubmit={submitDetails} className="update-form">
@@ -229,7 +220,6 @@ const UpdateProfile = () => {
 
       <hr className="section-divider" />
 
-      {/* SECTION 3: Change Password */}
       <section className="update-section">
         <h3>Security</h3>
         <form onSubmit={submitPassword} className="update-form">

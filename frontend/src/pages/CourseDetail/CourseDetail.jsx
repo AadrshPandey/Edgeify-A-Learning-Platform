@@ -4,6 +4,7 @@ import Navbar from '../../Components/Home/Navbar/Navbar';
 import Footer from '../../Components/Home/Footer/Footer';
 import { useAuth } from '../../context/AuthContext';
 import './CourseDetail.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -33,9 +34,9 @@ const CourseDetail = () => {
       setIsLoading(true);
       try {
         const [courseRes, videoRes, reviewRes] = await Promise.all([
-          fetch(`/api/v1/course/${courseId}`),
-          fetch(`/api/v1/video/course/${courseId}`),
-          fetch(`/api/v1/review/allReviews/${courseId}`)
+          fetch(`${BASE_URL}/api/v1/course/${courseId}`),
+          fetch(`${BASE_URL}/api/v1/video/course/${courseId}`),
+          fetch(`${BASE_URL}/api/v1/review/allReviews/${courseId}`)
         ]);
 
         const courseData = await courseRes.json();
@@ -50,16 +51,13 @@ const CourseDetail = () => {
         const fetchedReviews = reviewData.data || [];
         setReviews(fetchedReviews);
 
-        // Check Enrollment & Review status ONLY if the user is logged in
         if (user) {
-          // Check if user already left a review
           const alreadyReviewed = fetchedReviews.some(r => 
             r.user_id?._id === user._id || r.user_id === user._id
           );
           setHasReviewed(alreadyReviewed);
 
-          // Check Enrollment
-          const enrollRes = await fetch(`/api/v1/enrollment/is-enrolled/${courseId}`, {
+          const enrollRes = await fetch(`${BASE_URL}/api/v1/enrollment/is-enrolled/${courseId}`, {
             credentials: 'include'
           });
           
@@ -80,7 +78,6 @@ const CourseDetail = () => {
     fetchCourseData();
   }, [courseId, user]);
 
-  // --- ENROLLMENT HANDLER ---
   const handleEnroll = async () => {
     if (!user) {
       navigate('/auth/login');
@@ -94,7 +91,7 @@ const CourseDetail = () => {
 
     setIsEnrolling(true);
     try {
-      const response = await fetch(`/api/v1/enrollment/enroll/${courseId}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/enrollment/enroll/${courseId}`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -109,8 +106,6 @@ const CourseDetail = () => {
       setIsEnrolling(false);
     }
   };
-
-  // --- REVIEW SUBMIT HANDLER ---
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!reviewText.trim()) return setReviewError("Review text cannot be empty");
@@ -119,8 +114,7 @@ const CourseDetail = () => {
     setReviewError('');
 
     try {
-      // NOTE: Ensure this URL matches your backend route for creating a review!
-      const response = await fetch(`/api/v1/review/create/${courseId}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/review/create/${courseId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rating, review: reviewText }),
@@ -130,7 +124,6 @@ const CourseDetail = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to submit review');
 
-      // Optimistically add the new review to the top of the list
       const newReview = {
         _id: data.data?._id || Date.now(),
         user_id: { _id: user._id, fullName: user.fullName || "You" },
@@ -149,7 +142,6 @@ const CourseDetail = () => {
     }
   };
 
-  // --- HELPER MATH ---
   const calculateAverageRating = () => {
     if (reviews.length === 0) return 0;
     const total = reviews.reduce((acc, curr) => acc + curr.rating, 0);
@@ -164,7 +156,6 @@ const CourseDetail = () => {
     <div className="course-detail-wrapper">
       <Navbar />
 
-      {/* --- HERO BANNER --- */}
       <div className="course-hero-banner">
         <div className="course-hero-content">
           <div className="hero-breadcrumbs">
@@ -186,10 +177,8 @@ const CourseDetail = () => {
 
       <div className="course-main-layout">
         
-        {/* --- LEFT COLUMN: CONTENT --- */}
         <div className="course-content-col">
           
-          {/* Curriculum Section */}
           <section className="detail-section">
             <h2>Course Curriculum</h2>
             <p className="section-subtitle">{videos.length} lectures</p>
@@ -216,11 +205,9 @@ const CourseDetail = () => {
             )}
           </section>
 
-          {/* Reviews Section */}
           <section className="detail-section">
             <h2>Student Reviews</h2>
 
-            {/* --- NEW: ADD REVIEW FORM --- */}
             {isUserEnrolled && !hasReviewed && (
               <div className="add-review-box" style={{ background: '#111', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
                 <h3>Leave a Review</h3>
@@ -259,12 +246,10 @@ const CourseDetail = () => {
               </div>
             )}
 
-            {/* If they are enrolled and ALREADY reviewed it */}
             {isUserEnrolled && hasReviewed && (
               <p style={{ color: '#888', fontStyle: 'italic', marginBottom: '20px' }}>Thanks for reviewing this course!</p>
             )}
 
-            {/* List of Reviews */}
             {reviews.length === 0 ? (
               <div className="empty-reviews">No reviews yet. Be the first to enroll and review!</div>
             ) : (
@@ -291,7 +276,6 @@ const CourseDetail = () => {
           </section>
         </div>
 
-        {/* --- RIGHT COLUMN: STICKY CHECKOUT CARD --- */}
         <div className="course-sidebar-col">
           <div className="checkout-card">
             

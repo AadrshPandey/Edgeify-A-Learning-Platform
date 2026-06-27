@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './StudentDashboard.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const StudentDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -10,8 +11,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        // Adjust the URL if your dashboard router is prefixed differently in app.js
-        const response = await fetch('/api/v1/dashboard/student', {
+        const response = await fetch(`${BASE_URL}/api/v1/dashboard/student`, {
           credentials: 'include'
         });
 
@@ -50,7 +50,6 @@ const StudentDashboard = () => {
     );
   }
 
-  // Destructure the data sent from your backend
   const { enrolledCourses = 0, completedVideos = 0, averageProgress = 0, recentHistory = [] } = dashboardData || {};
 
   return (
@@ -60,7 +59,6 @@ const StudentDashboard = () => {
         <p>Welcome back! Here is a quick overview of your learning journey.</p>
       </div>
 
-      {/* --- STATS GRID --- */}
       <div className="dashboard-stats-grid">
         
         <div className="stat-card">
@@ -105,7 +103,6 @@ const StudentDashboard = () => {
 
       </div>
 
-      {/* --- RECENT HISTORY SECTION --- */}
       <div className="dashboard-section">
         <div className="section-header">
           <h3>Recently Watched</h3>
@@ -124,14 +121,12 @@ const StudentDashboard = () => {
         ) : (
           <div className="history-list">
             {recentHistory.slice(0,5).map((item) => {
-              // Extract video details safely (handling cases where a video might have been deleted)
               const video = item.video_id;
               if (!video) return null;
 
               return (
                 <div key={item._id} className="history-item">
                   <div className="history-thumbnail">
-                    {/* Fallback to a placeholder if no thumbnail exists */}
                     <img src={video.thumbnail || "https://via.placeholder.com/150x85?text=No+Thumbnail"} alt="thumbnail" />
                     <div className="play-overlay">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -140,7 +135,6 @@ const StudentDashboard = () => {
                   <div className="history-details">
                     <h4>{video.title || "Untitled Video"}</h4>
                     <p>Watched on {new Date(item.updatedAt).toLocaleDateString()}</p>
-                    {/* Assuming you want to link back to the video player */}
                     <Link to={`/courses/${video.course_id}/${video._id}`} className="resume-btn">Resume</Link>
                   </div>
                 </div>

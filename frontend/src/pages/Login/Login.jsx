@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Home/Navbar/Navbar';
 import { useAuth } from '../../context/AuthContext';
 import './Login.css';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -24,7 +25,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/v1/user/login', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -51,18 +52,15 @@ const Login = () => {
 
       {isLoading && (
         <div className="loading-overlay">
-          {/* Drop the react-spinner here instead of the CSS div */}
           <BounceLoader color="#0D51FB" size={60} speedMultiplier={1.5} />
           <p className="loading-text">Authenticating...</p>
         </div>
       )}
 
-      {/* Navbar at the top */}
       <div className="login-navbar-container">
         <Navbar />
       </div>
 
-      {/* Centered Login Card */}
       <div className="login-content">
         <div className="login-card">
           <div className="login-header">
