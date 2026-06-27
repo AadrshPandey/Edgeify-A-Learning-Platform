@@ -7,15 +7,16 @@ import './Courses.css';
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
-  
-  // Filters
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false); // To trigger search on enter/click
 
   //Params
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
+  const initialCategory = searchParams.get('category') || 'All';
+  
+  // Filters
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false); // To trigger search on enter/click
   
   // Status
   const [isLoading, setIsLoading] = useState(true);
@@ -79,11 +80,23 @@ const Courses = () => {
     e.preventDefault();
     setActiveCategory('All'); // Reset category when searching
     setIsSearching(true);
+
+    if (searchQuery.trim()) {
+      setSearchParams({ q: searchQuery }); 
+    } else {
+      setSearchParams({}); // Clears the URL if search is empty
+    }
   };
 
   const handleCategoryClick = (categoryId) => {
     setSearchQuery(''); // Clear search when clicking a category
     setActiveCategory(categoryId);
+
+    if (categoryId === 'All') {
+      setSearchParams({}); 
+    } else {
+      setSearchParams({ category: categoryId }); 
+    }
   };
 
   return (
