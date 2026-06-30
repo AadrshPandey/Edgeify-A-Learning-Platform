@@ -84,6 +84,107 @@ Edgeify/
 
 ## 🗄️ Database Schema & Models
 
+Below is the visual **Entity Relationship (ER) Diagram** designed in Eraser, followed by the native **Mermaid.js** code schema rendering.
+
+### 🖼️ Entity Relationship Diagram (Visual)
+
+![Entity Relationship Diagram](https://app.eraser.io/workspace/kh3g9LZrsBUOElrGT8wD/preview?origin=share)
+
+---
+
+### 💻 Mermaid ER Diagram (Natively Rendered on GitHub)
+
+```mermaid
+erDiagram
+    User ||--o{ Course : "publishes (teacher_id)"
+    User ||--o{ Enrollment : "registers (user_id)"
+    User ||--o{ Progress : "tracks (user_id)"
+    User ||--o{ History : "watches (user_id)"
+    User ||--o{ Review : "writes (user_id)"
+    User ||--o{ Category : "creates (user_id)"
+
+    Category ||--o{ Course : "contains (category_id)"
+    Course ||--|{ Video : "has (course_id)"
+    Course ||--o{ Enrollment : "has_students (course_id)"
+    Course ||--o{ Review : "has_ratings (course_id)"
+
+    Video ||--o{ Progress : "tracked_in (video_id)"
+    Video ||--o{ History : "saved_in (video_id)"
+
+    User {
+        ObjectId id PK
+        string username
+        string fullName
+        string email
+        string password
+        string role
+        string profile_Pic
+        string bio
+        string refreshToken
+    }
+    Course {
+        ObjectId id PK
+        string title
+        string description
+        string thumbnail
+        number price
+        string level
+        string language
+        string duration
+        ObjectId teacher_id FK
+        ObjectId category_id FK
+        number average_rating
+    }
+    Video {
+        ObjectId id PK
+        string title
+        string description
+        string video_url
+        string thumbnail
+        string duration
+        ObjectId course_id FK
+        ObjectId teacher_id FK
+    }
+    Category {
+        ObjectId id PK
+        string category_name
+        string description
+        string thumbnail
+        ObjectId user_id FK
+    }
+    Enrollment {
+        ObjectId id PK
+        ObjectId user_id FK
+        ObjectId course_id FK
+        number progress_percentage
+    }
+    Progress {
+        ObjectId id PK
+        ObjectId user_id FK
+        ObjectId video_id FK
+        boolean isCompleted
+    }
+    History {
+        ObjectId id PK
+        ObjectId user_id FK
+        ObjectId video_id FK
+    }
+    Review {
+        ObjectId id PK
+        ObjectId user_id FK
+        ObjectId course_id FK
+        number rating
+        string review
+    }
+```
+
+> [!NOTE]
+> **Implementation Note**: The Eraser design utilizes standard relational database keys (like `int` keys and `comment` fields). In this production MongoDB configuration, these are resolved as Mongoose `ObjectId` references, and the watch tracking is split into `History` and completeness `Progress` schemas.
+
+---
+
+### Mongoose Model Details
+
 Edgeify uses MongoDB with Mongoose. Below are the key data models and their schemas:
 
 ### 1. User (`User`)
